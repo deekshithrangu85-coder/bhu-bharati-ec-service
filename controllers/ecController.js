@@ -1,4 +1,4 @@
-const apiScraperService = require("../services/apiScraperService");
+const playwrightService = require("../services/playwrightService");
 const fs = require("fs");
 
 /**
@@ -21,8 +21,8 @@ async function downloadEC(req, res) {
     let filePath = null;
 
     try {
-        // 2. Automate document retrieval via API-level HTTP scraping
-        filePath = await apiScraperService.downloadEC({
+        // 2. Automate document retrieval via Playwright UI automation
+        filePath = await playwrightService.downloadEC({
             district,
             mandal,
             village,

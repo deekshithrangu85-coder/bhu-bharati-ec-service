@@ -35,6 +35,34 @@ This project leverages **Node.js**, **Express.js**, and **Playwright's APIReques
 
 ---
 
+## Installation & Setup
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/deekshithrangu85-coder/bhu-bharati-ec-service.git
+   cd bhu-bharati-ec-service
+   ```
+
+2. **Install dependencies:**
+   This project utilizes Playwright browser automation. Running `npm install` will automatically invoke the postinstall hook and download the required Playwright Chromium browser binaries:
+   ```bash
+   npm install
+   ```
+
+3. **Configure environment variables:**
+   Create a `.env` file in the root directory and configure the variables:
+   ```env
+   PORT=3000
+   TARGET_URL=https://bhubharati.telangana.gov.in/citizenDashboard
+   ```
+
+4. **Run the server:**
+   ```bash
+   npm start
+   ```
+
+---
+
 ## Project Architecture
 
 ```

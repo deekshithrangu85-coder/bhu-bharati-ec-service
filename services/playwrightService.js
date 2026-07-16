@@ -43,6 +43,11 @@ async function downloadEC(params) {
         page.on("console", (msg) => {
             console.log(`💬 Browser Console: ${msg.text()}`);
         });
+        page.on("response", (response) => {
+            if (response.status() >= 400) {
+                console.error(`❌ Failed to load resource: ${response.url()} (Status: ${response.status()})`);
+            }
+        });
     }
 
     try {
@@ -103,14 +108,33 @@ async function downloadEC(params) {
                 if (setAuthCookie) csrfToken = setAuthCookie.value;
             }
             
-            // 2. Open Search EC Details Page Directly
-            const searchUrl = `https://bhubharati.telangana.gov.in/searchECDetails?Y3NyZnRva2Vu=${csrfToken}&actId=ZuODB6MrhF9XEfdku1XEAg%3D%3D`;
-            console.log(`👉 Navigating directly to Search EC Details Page: ${searchUrl}`);
-            await page.goto(searchUrl, { waitUntil: "networkidle", timeout: 45000 });
+            // 2. Open Citizen Dashboard & click Search EC Details card to load jQuery and page scripts correctly
+            const dashboardUrl = `https://bhubharati.telangana.gov.in/citizenDashboard?Y3NyZnRva2Vu=${csrfToken}`;
+            console.log(`👉 Navigating to Citizen Dashboard: ${dashboardUrl}`);
+            await page.goto(dashboardUrl, { waitUntil: "networkidle", timeout: 45000 });
+            
+            // Check for redirection to login/session expiry
+            const currentUrl = page.url();
+            if (currentUrl.includes("/login") || currentUrl.includes("/Citizen") || currentUrl.toLowerCase().endsWith("/citizen")) {
+                throw new Error("Session expired or rejected by Bhu Bharati (redirected to login page). Please run saveSession.js again to log in.");
+            }
+            
+            console.log("👉 Clicking the Search EC Details card...");
+            await page.click('div[onclick*="searchECDetails"]');
+            
+            // Wait for navigation and network to become idle to let scripts load fully
+            console.log("⏳ Waiting for search page load and script execution...");
+            await page.waitForLoadState("networkidle");
+            
+            // Check if the card click redirected to login
+            if (page.url().includes("/login")) {
+                throw new Error("Session expired or rejected by Bhu Bharati when loading search page (redirected to login). Please run saveSession.js again.");
+            }
             
             // 3. Wait for the property search page selectors to load
             console.log("⏳ Waiting for Search EC Details form to load...");
             await page.waitForSelector("#districtId", { timeout: 30000 });
+            await page.waitForTimeout(3000); // 3-second safety buffer for script binding/initialization
             
             // 4. Fill in the dynamic dropdown forms (District -> Mandal -> Village -> SurveyNo -> KhataNo)
             console.log("✍️ Selecting District...");
@@ -143,12 +167,20 @@ async function downloadEC(params) {
             await page.dispatchEvent("#khataid", "change");
             
             // 5. Submit Form & Load Details Grid
-            console.log("🖱️ Clicking search button...");
-            await page.click("#search");
+            console.log("🖱️ Force-enabling and clicking search button...");
+            await page.evaluate(() => {
+                const btn = document.querySelector("#search");
+                if (btn) {
+                    btn.disabled = false;
+                    btn.removeAttribute("disabled");
+                }
+            });
             await page.click("#search");
             
             // Wait for grid data to load
-            await page.waitForTimeout(3000);
+            console.log("⏳ Waiting for grid data load...");
+            await page.waitForLoadState("networkidle");
+            await page.waitForTimeout(2000); // 2-second safety buffer for rendering
             
             // 6. Trigger Document Download Event
             console.log("⏳ Triggering download event via downloadECPDF()...");
@@ -158,10 +190,34 @@ async function downloadEC(params) {
                 fs.mkdirSync(downloadsDir, { recursive: true });
             }
 
-            const [download] = await Promise.all([
-                page.waitForEvent("download", { timeout: 45000 }),
+            // Setup a dialog listener to catch warnings (e.g. "no transaction done")
+            let dialogPromiseResolve;
+            const dialogPromise = new Promise((resolve) => {
+                dialogPromiseResolve = resolve;
+            });
+
+            page.on("dialog", async (dialog) => {
+                const message = dialog.message();
+                console.log(`💬 Portal Dialog alert popped up: "${message}"`);
+                await dialog.dismiss();
+                dialogPromiseResolve(message);
+            });
+
+            const downloadPromise = page.waitForEvent("download", { timeout: 45000 });
+
+            const [result] = await Promise.all([
+                Promise.race([
+                    downloadPromise.then(dl => ({ type: "download", value: dl })),
+                    dialogPromise.then(msg => ({ type: "dialog", value: msg }))
+                ]),
                 page.evaluate(() => downloadECPDF())
             ]);
+
+            if (result.type === "dialog") {
+                throw new Error(`Bhu Bharati Portal warning: "${result.value}"`);
+            }
+
+            const download = result.value;
 
             const tempFilename = `EC_${Date.now()}_${params.khataNo}.pdf`;
             const downloadPath = path.join(downloadsDir, tempFilename);
@@ -191,6 +247,14 @@ async function downloadEC(params) {
         }
         throw new Error(`Automation retrieval failed: ${err.message}`);
     } finally {
+        if (!isMockMode) {
+            try {
+                await context.storageState({ path: statePath });
+                console.log("💾 Session state successfully updated and saved to sessions/state.json.");
+            } catch (e) {
+                console.error("⚠️ Failed to update session state in finally block:", e);
+            }
+        }
         await context.close();
         await browser.close();
     }
