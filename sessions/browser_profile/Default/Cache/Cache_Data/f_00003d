@@ -1,0 +1,2690 @@
+function ajaxRequest() {
+	var activexmodes = [ "Msxml2.XMLHTTP", "Microsoft.XMLHTTP" ];
+	if (window.ActiveXObject) {
+		for (var i = 0; i < activexmodes.length; i++) {
+			try {
+				return new ActiveXObject(activexmodes[i]);
+			} catch (e) {
+			}
+		}
+	} else if (window.XMLHttpRequest)
+		return new XMLHttpRequest();
+	else
+		return false;
+}function chakriAdd()
+{
+	/*debugger;*/
+  	$('#loader-wrapper').css("display", "block");
+   	$('#load').attr('id','loader');
+   	//$('body').removeClass('loaded');
+   //	return true;
+}
+function chakriRemove()
+{
+	$('#loader-wrapper').css("display", "none");
+	//$('body').addClass('loaded');
+	//return true;
+	}
+/*function hrefONClick(url)
+{
+	chakriAdd();
+	location.href=url;
+}
+*/
+
+
+
+function getMandalFromDist(value, value1) {
+	// alert("divisionId --->>"+value);
+	chakriAdd();
+	loadLocTbl('mandalId', 'getMandalFromDistrict?districtId=' + value
+			+ '&type=13', 'mandal=' + value, value1);
+}
+
+function isalphabetsOnly(e) {
+	var key;
+	var keychar;
+
+	if (window.event)
+		key = window.event.keyCode;
+	else if (e)
+		key = e.which;
+	else
+		return true;
+	keychar = String.fromCharCode(key);
+	keychar = keychar.toLowerCase();
+	// control keys
+	if ((key == null) || (key == 0) || (key == 8) || (key == 9) || (key == 13)
+			|| (key == 27))
+		return true;
+	// alphas and numbers
+	else if ((("abcdefghijklmnopqrstuvwxyz ").indexOf(keychar) > -1))
+		return true;
+	else {
+		alert("Only alphabet is allowed.")
+		return false;
+	}
+	return false;
+}
+
+function isnumericsOnly(e) {
+	debugger;
+	var key;
+	var keychar;
+
+	if (window.event)
+		key = window.event.keyCode;
+	else if (e)
+		key = e.which;
+	else
+		return true;
+	keychar = String.fromCharCode(key);
+	keychar = keychar.toLowerCase();
+	// control keys
+	if ((key == null) || (key == 0) || (key == 8) || (key == 9) || (key == 13)
+			|| (key == 27)) {
+		return true;
+	}
+
+	// alphas and numbers
+	else if ((("0123456789").indexOf(keychar) > -1)) {
+		return true;
+
+	} else {
+		alert("Only Numeric is allowed.")
+		return false;
+	}
+	return true;
+}
+function checkmobile(e) {
+	debugger;
+	var mobilelen = document.getElementById('informantMobileNo').value;
+	var key;
+	var keychar;
+
+	if (window.event)
+		key = window.event.keyCode;
+	else if (e)
+		key = e.which;
+	else
+		return true;
+	keychar = String.fromCharCode(key);
+	keychar = keychar.toLowerCase();
+	// control keys
+	if ((key == null) || (key == 0) || (key == 8) || (key == 9) || (key == 13)
+			|| (key == 27)) {
+		return true;
+	}
+
+	// alphas and numbers
+	else if ((("0123456789").indexOf(keychar) > -1)) {
+		if (mobilelen.length < 1) {
+			if ((keychar == 0)) {
+				alert("Mobile Number is Not Correct.");
+				return false;
+			}
+		}
+		return true;
+
+	} else {
+		alert("Only Numeric is allowed.")
+		return false;
+	}
+	return false;
+}
+function isalphanumericsOnly(e) {
+
+	var key;
+	var keychar;
+
+	if (window.event)
+		key = window.event.keyCode;
+	else if (e)
+		key = e.which;
+	else
+		return true;
+	keychar = String.fromCharCode(key);
+	keychar = keychar.toLowerCase();
+	// control keys
+	if ((key == null) || (key == 0) || (key == 8) || (key == 9) || (key == 13)
+			|| (key == 27))
+		return true;
+	// alphas and numbers
+	else if ((("0123456789abcdefghijklmnopqrstuvwxyz /-").indexOf(keychar) > -1))
+		return true;
+	else {
+		alert("Only Alpha Numeric is allowed.")
+		return false;
+	}
+	return false;
+}
+
+function emailalphanumericsOnly(e) {
+
+	var key;
+	var keychar;
+
+	if (window.event)
+		key = window.event.keyCode;
+	else if (e)
+		key = e.which;
+	else
+		return true;
+	keychar = String.fromCharCode(key);
+	keychar = keychar.toLowerCase();
+	// control keys
+	if ((key == null) || (key == 0) || (key == 8) || (key == 9) || (key == 13)
+			|| (key == 27))
+		return true;
+	// alphas and numbers
+	else if ((("0123456789abcdefghijklmnopqrstuvwxyz.-_@").indexOf(keychar) > -1))
+		return true;
+	else {
+		alert("Only Alpha Numeric is allowed.")
+		return false;
+	}
+	return true;
+}
+
+function validateEmailNew(email) {
+	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	return re.test(email);
+}
+function isE_MailValidateNew(mailId, id) {
+	debugger;
+	if (mailId != '' && mailId.length != 0) {
+		if (!validateEmailNew(mailId)) {
+			alert("Please enter a valid email id.");
+			document.getElementById(id).value="";
+			document.getElementById(id).focus();
+			return false;
+		}
+	}
+}
+
+function is_Mobilevalid(value, id) {
+	debugger;
+	if (value.trim().length != 10) {
+		document.getElementById(id).focus();
+		alert("Mobile Number Must be 10 digits.");
+		return false;
+	}
+}
+function pinlength(value, id) {
+	debugger;
+	if (value.trim().length != 6) {
+		document.getElementById(id).focus();
+		alert("Pin code is Incorrect.");
+		return false;
+	}
+}
+
+function chechaadhar(value, id) {
+	debugger;
+	if (value.trim().length != 12) {
+		document.getElementById(id).focus();
+		alert("Please enter correct Aadhar Number.");	
+		return false;
+	}
+}
+
+function loaddataMulti(div, url, params) {
+
+	try {
+		var xml = ajaxRequest();
+		xml.open("GET", url, false);
+		xml.onreadystatechange = function() {
+
+			if (xml.readyState == 4 || xml.readyState == "complete") {
+
+				if (xml.status == 200
+						|| window.location.href.indexOf("http") == -1) {
+					document.getElementById(div).innerHTML = xml.responseText;
+
+				}
+			}
+		};
+		
+		/*xml.setRequestHeader("Content-type",
+				"application/x-www-form-urlencoded");*/
+		//xml.setRequestHeader("Content-type",'multipart/form-data;boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW');
+		
+		xml.send(params);
+	} catch (e) {
+		alert(e);
+	}
+
+}
+
+
+function loaddata(div, url, params) {
+
+	try {
+		var xml = ajaxRequest();
+		xml.onreadystatechange = function() {
+
+			if (xml.readyState == 4 || xml.readyState == "complete") {
+
+				if (xml.status == 200
+						|| window.location.href.indexOf("http") == -1) {
+					document.getElementById(div).innerHTML = xml.responseText;
+				}
+				chakriRemove();
+			}
+		};
+		xml.open("POST", url, true);
+		xml.setRequestHeader("Content-type",
+				"application/x-www-form-urlencoded");
+		xml.send(params);
+	} catch (e) {
+		chakriRemove();
+		alert(e);
+	}
+
+}
+
+function isnumericswithdotOnly(e) {
+
+	var key;
+	var keychar;
+
+	if (window.event)
+		key = window.event.keyCode;
+	else if (e)
+		key = e.which;
+	else
+		return true;
+	keychar = String.fromCharCode(key);
+	keychar = keychar.toLowerCase();
+	// control keys
+	if ((key == null) || (key == 0) || (key == 8) || (key == 9) || (key == 13)
+			|| (key == 27))
+		return true;
+	// alphas and numbers
+	else if ((("0123456789.").indexOf(keychar) > -1))
+		return true;
+	else {
+		alert("Only Numeric is allowed.")
+		return false;
+	}
+	return false;
+}
+function isalphanumericsNospaceOnly(e) {
+
+	var key;
+	var keychar;
+
+	if (window.event)
+		key = window.event.keyCode;
+	else if (e)
+		key = e.which;
+	else
+		return true;
+	keychar = String.fromCharCode(key);
+	keychar = keychar.toLowerCase();
+	// control keys
+	if ((key == null) || (key == 0) || (key == 8) || (key == 9) || (key == 13)
+			|| (key == 27))
+		return true;
+	// alphas and numbers
+	else if ((("0123456789abcdefghijklmnopqrstuvwxyz").indexOf(keychar) > -1))
+		return true;
+	else {
+		alert("Only Alpha Numeric is allowed.")
+		return false;
+	}
+	return false;
+}
+
+function aadharValidation(obj) {
+	var strVal = obj.value;
+	var letters = /^[0-9]+$/;
+	var flgVal = !obj.value.match(letters);
+	if (strVal.length != 12) {
+		alert('Enter valid aadhar number.');
+		obj.value = "";
+		return false;
+	}
+	if (flgVal) {
+		alert('Enter valid aadhar number.');
+		obj.value = "";
+		return false;
+	}
+	if (strVal.verhoeffCheck() == false) {
+		alert('Enter valid aadhar number.');
+		obj.value = "";
+		return false;
+	}
+}
+
+/*
+ * to apply blank Fields validation input:-must be Json Object.
+ */
+function blankFieldValidation(JsonObj) {
+	for ( var key in JsonObj) {
+		if (JsonObj.hasOwnProperty(key)) {
+			var val = JsonObj[key];
+			if (val == '') {
+				alert("Please enter the " + key);
+				document.getElementById(key).focus();
+				return false;
+			}
+		}
+	}
+}
+
+/*
+ * Added By Saddam and Ujjwal
+ */
+
+function loadLocTbl1(div, url, params, value1) {
+debugger;
+	try {
+		var xml = ajaxRequest();
+		xml.onreadystatechange = function() {
+
+			if (xml.readyState == 4 || xml.readyState == "complete") {
+
+				if (xml.status == 200
+						|| window.location.href.indexOf("http") == -1) {
+					// popUpMessageNew("xml.responseText:" + xml.responseText);
+
+					document.getElementById(div).innerHTML = xml.responseText;
+									
+					document.getElementById(div).value = value1;
+
+					// $('body').addClass('loaded');
+				} else {
+
+				}
+
+			}
+		};
+
+		xml.open("GET", url, true);
+		xml.setRequestHeader("Content-type",
+				"application/x-www-form-urlencoded");
+		xml.send(params);
+	} catch (e) {
+
+	}
+}
+function newloadLocTbl1(div, url, params, value1) {
+
+	try {
+		var xml = ajaxRequest();
+		xml.onreadystatechange = function() {
+
+			if (xml.readyState == 4 || xml.readyState == "complete") {
+
+				if (xml.status == 200
+						|| window.location.href.indexOf("http") == -1) {
+					// popUpMessageNew("xml.responseText:" + xml.responseText);
+
+					document.getElementById(div).innerHTML = xml.responseText;
+									
+					//document.getElementById(div).value = value1;
+
+					// $('body').addClass('loaded');
+				} else {
+
+				}
+
+			}
+		};
+
+		xml.open("GET", url, true);
+		xml.setRequestHeader("Content-type",
+				"application/x-www-form-urlencoded");
+		xml.send(params);
+	} catch (e) {
+
+	}
+}
+
+function loadLocTbl(div, url, params, value1) {
+
+	try {
+		contextPath = $("#contextPathId").val();
+		var xml = ajaxRequest();
+		xml.onreadystatechange = function() {
+
+			if (xml.readyState == 4 || xml.readyState == "complete") {
+
+				if (xml.status == 200
+						|| window.location.href.indexOf("http") == -1) {
+					// popUpMessageNew("xml.responseText:" + xml.responseText);
+
+					document.getElementById(div).innerHTML = xml.responseText;
+
+					if (typeof (value1) != "undefined") {
+						document.getElementById(div).value = value1;
+					}
+
+					// alert(xml.responseText);
+
+					// $('body').addClass('loaded');
+					/*expand & collapse fix*/
+					$(".direction-up").click(function() {
+				        $(this).toggleClass("direction-down");    
+				    });
+					/*....*/
+				} else if(xml.status == 401)   
+				{
+					console.log("Ajax call, session has been expired.");
+					window.location.href=contextPath+"/login";
+				} 
+				else {
+
+				}
+				chakriRemove();
+			}
+		};
+
+		xml.open("GET", url, true);
+		xml.setRequestHeader("Content-type",
+				"application/x-www-form-urlencoded");
+		xml.setRequestHeader("X-Requested-With","XMLHttpRequest");   
+		xml.send(params);
+	} catch (e) {
+		chakriRemove();
+		console.log(e);
+	}
+}
+
+// **************Verhoeff Algorithm validation for Aadhaar number**************/
+
+var d = [ [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], [ 1, 2, 3, 4, 0, 6, 7, 8, 9, 5 ],
+		[ 2, 3, 4, 0, 1, 7, 8, 9, 5, 6 ], [ 3, 4, 0, 1, 2, 8, 9, 5, 6, 7 ],
+		[ 4, 0, 1, 2, 3, 9, 5, 6, 7, 8 ], [ 5, 9, 8, 7, 6, 0, 4, 3, 2, 1 ],
+		[ 6, 5, 9, 8, 7, 1, 0, 4, 3, 2 ], [ 7, 6, 5, 9, 8, 2, 1, 0, 4, 3 ],
+		[ 8, 7, 6, 5, 9, 3, 2, 1, 0, 4 ], [ 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 ] ];
+
+// permutation table p
+var p = [ [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], [ 1, 5, 7, 6, 2, 8, 3, 0, 9, 4 ],
+		[ 5, 8, 0, 3, 7, 9, 6, 1, 4, 2 ], [ 8, 9, 1, 6, 0, 4, 3, 5, 2, 7 ],
+		[ 9, 4, 5, 3, 1, 2, 6, 8, 7, 0 ], [ 4, 2, 8, 6, 5, 7, 3, 9, 0, 1 ],
+		[ 2, 7, 9, 3, 8, 0, 6, 4, 1, 5 ], [ 7, 0, 4, 6, 9, 1, 3, 2, 5, 8 ] ];
+
+// inverse table inv
+var inv = [ 0, 4, 3, 2, 1, 5, 6, 7, 8, 9 ];
+
+// converts string or number to an array and inverts it
+function invArray(array) {
+	var arr = array;
+	if (Object.prototype.toString.call(arr) == "[object Number]") {
+		arr = String(arr);
+	}
+
+	if (Object.prototype.toString.call(arr) == "[object String]") {
+		arr = arr.split("").map(Number);
+	}
+
+	return arr.reverse();
+
+}
+
+// generates checksum
+function generate(array) {
+	var c = 0;
+	var invertedArray = invArray(array);
+
+	for (var i = 0; i < invertedArray.length; i++) {
+		c = d[c][p[((i + 1) % 8)][invertedArray[i]]];
+	}
+
+	return inv[c];
+}
+
+// validates checksum
+function validate(array) {
+
+	var c = 0;
+	/* var array = document.getElementById('applicantaadhar').value; */
+	var invertedArray = invArray(array);
+
+	for (var i = 0; i < invertedArray.length; i++) {
+		c = d[c][p[(i % 8)][invertedArray[i]]];
+	}
+
+	if (c == 0) {
+		/*
+		 * document.getElementById('aadharmessage').innerHTML = "<p style=color:green>Aadhar
+		 * number is valid</p>";
+		 */
+		return (alert("Aadhar Number Is Valid."));
+	} else {
+		/*
+		 * document.getElementById('aadharmessage').innerHTML = "<p style=color:red>Please
+		 * enter valid Aadhar Number</p>";
+		 */
+		return (alert("Aadhar Number Is Not Valid."));
+	}
+}
+
+/*
+ * Added By Ujjwal Comon function to get Distrinct,Division Mandal and Village
+ */
+
+function getDivision1(value, value1) {
+	// alert(value);
+	loadLocTbl1('divisionId', 'getDivisionFromDistrictMIS?districtId=' + value
+			+ '&type=11', 'districtId=' + value, value1);
+	
+
+}
+function getMandal1(value, value1) {
+	// alert("divisionId --->>"+value);
+	loadLocTbl1('mandalId', 'getMandalFromDivision?divisionId=' + value
+			+ '&type=12', 'division=' + value, value1);
+}
+function getVillage1(value, value1) {
+	// alert("divisionId --->>"+value);
+	loadLocTbl1('villageId', 'getVillageFromMandal?mandalId=' + value
+			+ '&type=13', 'mandal=' + value, value1);
+}
+
+function getKhataForPahani(villId) {
+	// alert("villid --->>"+villId);
+	loadLocTbl('khataList', 'getKhataForPahani?villId=' + villId, 'villId='
+			+ villId);
+}
+function getKhataDetails(villId) {
+	chakriAdd();
+	loadLocTbl('khataId', 'getKhataForPahani?villId=' + villId, 'villId='
+			+ villId);
+}
+function getKhataDetails1(villId) {
+	chakriAdd();
+	loadLocTbl('khataId', 'getKhataForPahaniforreport?villId=' + villId, 'villId='+ villId);
+}
+function getSurveyDetails(villId, flag) {
+	chakriAdd();
+	loadLocTbl('surveyIdselect', 'getSurveyForPahani?villId=' + villId
+			+ '&flag=' + flag, 'villId=' + villId + '&flag=' + flag);
+}
+
+function getDivision(value, value1) {
+	/*debugger;*/
+	// alert(value);
+	chakriAdd();
+	loadLocTbl('divisionId', 'getDivisionFromDistrict?districtId=' + value
+			+ '&type=11', 'districtId=' + value, value1);
+	
+	/*var mandal = document.getElementById('mandalId');
+	mandal.value = document.getElementById('divisionId').options[0].value;
+	document.getElementById('villageId').value = document.getElementById('divisionId').options[0].value;
+	document.getElementById('divisionId').value = document.getElementById('divisionId').options[0].value;*/
+	document.getElementById('mandalId').length=1;
+	document.getElementById('villageId').length=1;
+
+}
+function newgetDivision(value, value1) {
+	// alert(value);
+	newloadLocTbl1('divisionId', 'getDivisionFromDistrict?districtId=' + value
+			+ '&type=11', 'districtId=' + value, value1);
+
+
+}
+function getMandal(value, value1) {
+	/*debugger;*/
+	 /*alert("divisionId --->>"+value);*/
+	
+	chakriAdd();
+	loadLocTbl('mandalId', 'getMandalFromDivision?divisionId=' + value
+			+ '&type=12', 'division=' + value, value1);
+/*	document.getElementById('villageId').value = document.getElementById('mandalId').options[0].value;*/
+	document.getElementById('villageId').length=1;
+}
+function getVillage(value, value1) {
+/*	debugger;*/
+	// alert("divisionId --->>"+value);
+	chakriAdd();
+	loadLocTbl('villageId', 'getVillageFromMandal?mandalId=' + value
+			+ '&type=13', 'mandal=' + value, value1);
+}
+
+/*$('.tree-toggle').click(function() {
+	$(this).parent().children('ul.tree').toggle(200);
+});
+$(function() {
+	$('.tree-toggle').parent().children('ul.tree').toggle(200);
+})*/
+
+$(function() {
+	$("#datepicker1,#datepicker2").datepicker({
+		autoclose : true,
+		todayHighlight : true
+	}).datepicker('update', new Date());
+	
+	$(".datepickerReg1").datepicker({
+		autoclose : true,
+		todayHighlight : true,
+		format: 'dd/mm/yyyy',
+        endDate: '+0d'
+	});
+	
+	$(".datepickerReg2").datepicker({
+		autoclose : true,
+		todayHighlight : true,
+        format: 'dd/mm/yyyy',
+        startDate: '+0d'
+
+	});
+	
+	$(".datepicker30Days").datepicker({
+		autoclose : true,
+		todayHighlight : true,
+        format: 'dd/mm/yyyy',
+        startDate: '+0d',
+        endDate: '+30d'
+	});
+
+	$('ul.custom-breadcrumb li.blue-crumb').on('click', function() {
+		$(this).parent().find('li.faded-crumb').removeClass('faded-crumb');
+		$(this).addClass('faded-crumb');
+	});
+	
+	
+});
+
+// date picker start
+
+/*$('#txtDate').datepicker({
+    format: 'dd/mm/yyyy',
+    autoclose: true 
+});*/
+
+/*$( function() {
+    $( "#txtDate" ).datepicker();
+  } );*/
+
+
+// pin verfication starting with 5 upto 6 digits
+function pinverification(e) {
+	debugger;
+	var pinlen = document.getElementById('pinCode').value;
+	var key;
+	var keychar;
+
+    if (window.event)
+        key = window.event.keyCode;
+    else if (e)
+        key = e.which;
+    else
+        return true;
+    keychar = String.fromCharCode(key);
+    keychar = keychar.toLowerCase();
+    // control keys
+    if ((key == null) || (key == 0) || (key == 8) || (key == 9)
+            || (key == 13) || (key == 27)){
+    	return true;
+    }
+        
+    // alphas and numbers
+    else if ((("0123456789").indexOf(keychar) > -1)){
+    	if(pinlen.length <1){
+       if(keychar == 5){
+	    return true;
+     }
+	 
+ else{
+	 alert("Please enter correct Pin Code.");
+	 return false;
+ }
+ } 		
+    	 return true;
+    
+    }
+    else {
+        alert("Only Numeric is allowed.")
+        return false;
+    }
+    return false;
+}
+
+function alterPersonelNumber(mob, alter) {
+
+	var personel = document.getElementById(mob).value;
+	var alertnate = document.getElementById(alter).value;
+	if ((personel.length == 0 && personel.length != 10)) {
+		alert("Mobile Number Incorrect.");
+		return false;
+	}
+	if ((alertnate.trim() == personel.trim())
+			&& (alertnate.length == personel.length)) {
+		alert("Mobile Number and Alternate Mobile Number must not be same.");
+		return false;
+	}
+
+	return true
+}
+function alphanumericsOnly(e) {
+
+	var key;
+	var keychar;
+
+	if (window.event)
+		key = window.event.keyCode;
+	else if (e)
+		key = e.which;
+	else
+		return true;
+	keychar = String.fromCharCode(key);
+	keychar = keychar.toLowerCase();
+	// control keys
+	if ((key == null) || (key == 0) || (key == 8) || (key == 9) || (key == 13)
+			|| (key == 27))
+		return true;
+	// alphas and numbers
+	else if ((("0123456789abcdefghijklmnopqrstuvwxyz ").indexOf(keychar) > -1))
+		return true;
+	else {
+		alert("Only Alpha Numeric is allowed.")
+		return false;
+	}
+	return false;
+}
+
+function UploaddMultipartData(div, url, params) {
+	// to submit new formdata() to the controller
+	debugger;
+	try {
+		xhr = new XMLHttpRequest();
+		xhr.open('POST', url, false);
+		/* xhr.overrideMimeType('text/html; charset="utf-8"'); */
+		xhr.onreadystatechange = function() {
+
+			if (xhr.readyState == 4 || xhr.readyState == "complete") {
+
+				if (xhr.status == 200
+						|| window.location.href.indexOf("http") == -1) {
+				/*	alert("xml.responseText:" + xhr.responseText);*/
+					document.getElementById(div).value = xhr.responseText;
+				} else {
+
+				}
+			}
+		};
+		xhr.send(params);
+
+	} catch (e) {
+		alert(e);
+	}
+}
+
+function getDateFromDate(fromDate, tostart) {
+
+	var dd = fromDate.value;
+	tostart.setAttribute("min", dd);
+
+}
+
+function confirmationmutation() {
+	debugger;
+	var r = confirm("Do you want to proceed further ?");
+	if (r == true) {
+		return true;
+	} else
+		return false;
+}
+
+function getRelationUsingGender(value, value1) {
+	loaddata(value, "getRelationUsingGender", "gender=" + value1);
+
+}
+function ageValidation() {
+	var dateOfBirth = $("#dateOfBirth").val();
+	var today = new Date();
+	var birthDate = new Date(dateOfBirth);
+	var age = today.getFullYear() - birthDate.getFullYear();
+	if (age > 18)
+		return true
+	else {
+		alert("Minimum Age is 18.");
+		return false;
+	}
+
+}
+
+function verifyaadhar() {
+
+	debugger;
+
+	/*
+	 * var varAadhar = document.getElementById("aadharNo").value; if
+	 * (varAadhar.length == 0) { alert("Please enter 12 digit Aadhaar ID.");
+	 * document.getElementById("aadharNo").focus(); return false; }
+	 * 
+	 * if (varAadhar.length != 12) { alert("Incorrect Aadhar No.");
+	 * document.getElementById("aadharNo").value.value = "";
+	 * document.getElementById("aadharNo").focus(); return false; }
+	 */
+	var aadhaarvalid = $("#aadharNo").val().verhoeffCheck();
+	if (!aadhaarvalid) {
+		alert("Please enter correct Aadhaar No.");
+		return false;
+	}
+	return true;
+}
+function validationForAddUserInAdminDashboard(role) {
+	debugger;
+	//alert(role);
+	var varAadhar = document.getElementById("aadharNo").value;
+	var aadhaarvalid = $("#aadharNo").val().verhoeffCheck();
+	var firstName = $("#firstName").val();
+	var login = $("#userLoginId").val();
+	var employeeId = $("#employeeId").val();
+	var gender = $("#gender").val();
+	var mobileNo = $("#mobileNumber").val();
+	var altMobNo = $("#phoneNumber").val();
+	var userType = $("#userType").val();
+	// var status=$("#status").val();
+	/*
+	 * var fileLength=document.getElementById('file1').files.length; var
+	 * signaturefileLength=document.getElementById('file2').files.length;
+	 */
+	 var fileLength=document.getElementById('file1').files.length;
+	 var  signaturefileLength=document.getElementById('file2').files.length;
+	var email = $("#email").val();
+	var dateOfBirth = $("#dateOfBirth").val();
+	var designation = $("#designation").val();
+	// var designation=$("#designation").val();
+
+	if (varAadhar == "") {
+		alert("Please enter Aadhaar No.");
+		return false;
+
+	}
+	if (!aadhaarvalid) {
+		alert("Please enter correct Aadhaar No.");
+		return false;
+	}
+	if (login == "") {
+		alert("Please enter Login.");
+		return false;
+	}
+	if (firstName == "") {
+		alert("Please enter Name.");
+		return false;
+	}
+
+	if (gender == "0") {
+		alert("Please Select Gender.");
+		return false;
+	}
+	if (dateOfBirth == "") {
+		alert("Please enter DOB.");
+		return false;
+	}
+
+	if (mobileNo == "") {
+		alert("Please enter Mobile No.");
+		return false;
+	}
+	if (isNaN(mobileNo) == true) {
+		alert("Please enter only numerics in Mobile No.");
+		return false;
+	}
+	if (mobileNo.length != 10) {
+		alert("Please Enter 10 Digits in Mobile No.");
+		return false;
+	}
+	if ((altMobNo.trim() == mobileNo.trim())
+			&& (altMobNo.length == mobileNo.length)) {
+		alert("Mobile No. and Alternate Mobile No. can not be Same.");
+		return false;
+	}
+	
+	if (email == "") {
+		alert("Please Enter E-mail ID.");
+		return false;
+	}
+
+	
+	if (designation == "0") {
+		alert("Please Select Designation.");
+		return false;
+	}
+
+	if (userType == "0") {
+		alert("Please Select User Type.");
+		return false;
+	}
+	
+	if(fileLength==0)
+	{
+		alert("Please Upload Photo."); 
+		return false; 
+		}
+	if(role=="1")
+	{
+		if(designation=="5" || designation=="19")
+			{
+				  if($("select[name='selectData1'] option").length>2)
+					  {
+					  alert("For VRO, You can assign only one village");
+					  return false;
+					  }
+				  else if($("select[name='selectData1'] option").length=="1")
+					  {
+					  alert("Please Select Village");
+					  return false;
+					  }
+			}
+		else if(designation=="3" || designation=="4")
+			{
+			if($("mandal").val()=="0")
+			  {
+			  alert("Please Select Mandal");
+			  return false;
+			  }	
+			}
+		else
+			{
+			if($("select[name='selectData1'] option").length=="1")
+			  {
+			  alert("Please Select Village");
+			  return false;
+			  }
+			}
+	}
+	if(role=="14")
+	{
+	  if($("#district").val()=="0")
+		  {
+		  alert("Please Enter District");
+		  return false;
+		  }
+	}
+	 
+	if(designation=="5" || designation=="1" || designation=="2")
+		{
+	 if(signaturefileLength==0) { 
+		 alert("Please Upload Signature."); 
+		 return false; 
+		 }
+		}
+
+	if (email != "") {
+		if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+			// return true;
+		} else {
+			alert("You have entered an invalid E-mail ID.");
+			return false;
+		}
+	}
+	if(role=="16")
+		{
+		  if(document.getElementById('division').value=="0")
+			  {
+			  alert("Please Enter Division");
+			  return false;
+			  }
+		}
+	if(role=="18")
+	{
+	  if(document.getElementById('mandal').value=="0")
+		  {
+		  alert("Please Enter Mandal");
+		  return false;
+		  }
+	}
+	
+	if(document.getElementById('signGrid').style.display=="")
+	{
+	//alert(document.getElementById('file2').files.length)
+			if(document.getElementById('file2').value=="")
+			{
+			alert("Please upload Signature");
+			return false;
+	}
+	}
+	var otpVal=document.getElementById('otpDiv').style.display;
+			if(otpVal=="")
+			{
+						if(document.getElementById('otp3').value=="0"){
+						alert("Please Select OTP");
+						return false;
+						}
+
+			}
+
+	
+	if(document.getElementById('digitalSignatureDiv').style.display=="")
+	{
+			if(document.getElementById('machineName1').value=="0"){
+			alert("Please Select Any  Digital Signature");
+			return false;
+			}
+	
+			if(document.getElementById('tokenNumberId').value==""){
+			alert("Please enter Any token Number");
+			return false;
+			}
+
+	}
+	
+	if(document.getElementById('biometricdiv').style.display==""){
+			if(document.getElementById('biometricReqForTahasildar').value=="0"){
+			alert("Please Select BioMetric");
+			return false;
+			}
+	}
+	if (dateOfBirth != "") {
+		var today = new Date();
+		var form = $("#dateOfBirth").val().split("/");
+		var f = new Date(form[2], form[1] - 1, form[0]);
+		var age = today.getFullYear() - form[0];
+		console.log(age);
+		if (isNaN(age)) {
+			age = parseInt(age);
+			console.log(age);
+		}
+		if (age >= 18) {
+			/* alert(age); */
+			console.log(age);
+			// return true;
+		} else {
+			/* alert(age); */
+			console.log(age);
+			alert("Minimum Age is 18 in DOB.");
+			return false;
+		}
+	}
+		if(document.getElementById("file2").value!="")
+		{
+	var oMyForm = new FormData();
+	oMyForm.append("upfile",
+			document.getElementById("file2").files[0]);
+	oMyForm.append("userLoginId", document.getElementById("userLoginId").value);
+	UploaddMultipartData('signatureImagepath','UserUploadSignature',oMyForm); 
+	//return true;
+		}
+	if(document.getElementById("file1").value!="")
+	{
+		var oMyForm = new FormData();
+		oMyForm.append("upfile",
+				document.getElementById("file1").files[0]);
+		//oMyForm.append("loginId", document.getElementById("userLoginId").value);
+		oMyForm.append("userLoginId",document.getElementById('userLoginId').value);
+		UploaddMultipartData('formImagepath','UserUploadPhoto',oMyForm);  	
+		return true;
+	}
+
+
+	
+
+}
+
+function validationForUpdateUserInAdminDashboard() {
+	debugger;
+	var varAadhar = document.getElementById("aadharNo").value;
+	var firstName = $("#firstName").val();
+	var login = $("#userLoginId").val();
+	var gender = $("#gender").val();
+	var mobileNo = $("#mobileNumber").val();
+	var empId = $("#empId").val();
+	var userType = $("#userType").val();
+	/* var status=$("#status").val(); */
+	/*
+	 * var fileLength=document.getElementById('photoUpload').files.length; var
+	 * signaturefileLength=document.getElementById('signUpload').files.length;
+	 */
+	var email = $("#email").val();
+	var dob = $("#dob").val();
+	/* var designation=$("#designation").val(); */
+
+	if (varAadhar == "") {
+		alert("Please enter Aadhaar No.");
+		return false;
+	}
+	if (login == "") {
+		alert("Please enter Login.");
+		return false;
+	}
+	if (firstName == "") {
+		alert("Please enter Name.");
+		return false;
+	}
+
+	if (gender == "0") {
+		alert("Please Select Gender.");
+		return false;
+	}
+	/*
+	 * if(dateOfBirth=="") { alert("Please enter Date Of Birth."); return false; }
+	 */
+	if (mobileNo == "") {
+		alert("Please enter Mobile No.");
+		return false;
+	}
+	if (isNaN(mobileNo) == true) {
+		alert("Please enter only numerics in Mobile No.");
+		return false;
+	}
+	if (empId == "") {
+		alert("Please enter Employee Id.");
+		return false;
+	}
+
+	/*
+	 * if(email=="") { alert("Please Enter EmailId."); return false; }
+	 */
+
+	/*
+	 * if(status=="0") { alert("Please enter Status."); return false; }
+	 */
+	/*
+	 * if(designation=="0") { alert("Please enter Designation."); return false; }
+	 */
+
+	if (userType == "") {
+		alert("Please Select User Type.");
+		return false;
+	}
+	/*
+	 * if(fileLength==0) { alert("Please Upload Photo."); return false; }
+	 * if(signaturefileLength==0) { alert("Please Upload Signature."); return
+	 * false; }
+	 */
+	if (email != "") {
+		if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+			// return true;
+		} else {
+			alert("You have entered an invalid E-mail ID.");
+			return false;
+		}
+	}
+	var aadhaarvalid = $("#aadharNo").val().verhoeffCheck();
+	if (!aadhaarvalid) {
+		alert("Please enter correct Aadhaar No.");
+		return false;
+	}
+	// else return true;
+	if (dob != "") {
+
+		var today = new Date();
+		var form = $("#dob").val().split("/");
+		var f = new Date(form[2], form[1] - 1, form[0]);
+		var age = today.getFullYear() - f.getFullYear();
+		console.log(age);
+		if (isNaN(age)) {
+			age = parseInt(age);
+			console.log(age);
+		}
+		if (age >= 18) {
+			// alert(age);
+			
+		} else {
+			// alert(age);
+			console.log(age);
+			alert("Minimum Age is 18 in DOB.");
+			return false;
+		}
+		if(document.getElementById("signUpload").value!="")
+		{
+	var oMyForm = new FormData();
+	oMyForm.append("upfile",
+			document.getElementById("signUpload").files[0]);
+	oMyForm.append("userLoginId", document.getElementById("userLoginId").value);
+	UploaddMultipartData('signatureImagepath','UserUploadSignature',oMyForm); 
+	//return true;
+		}
+	if(document.getElementById("photoUpload").value!="")
+	{
+		var oMyForm = new FormData();
+		oMyForm.append("upfile",
+				document.getElementById("photoUpload").files[0]);
+		//oMyForm.append("loginId", document.getElementById("userLoginId").value);
+		oMyForm.append("userLoginId",document.getElementById('userLoginId').value);
+		UploaddMultipartData('formImagepath','UserUploadPhoto',oMyForm);  	
+		return true;
+	}
+	
+
+
+	}
+
+}
+// Validation User Assign Location Validtion
+function assignLocationValidation(roleId) {
+	//alert(roleId);
+	var selectListInAssignLocation = $("#selectlist").val();
+	var selectedListSize = $('#selectlist option[value]').length;
+	var villagesList = $('#multipleSelect option[value]').length;
+	var desigantionId = $("#designationId").val();
+	var selectedDistrictId=$("#districtId").val();
+	var selectedDivisionId=$("#divisionId").val();
+	var selectedMandalId=$("#mandalId").val();
+	// alert(desigantionId);
+	// alert(assignedLocationTableSize);
+	if(roleId==14){
+		if(selectedDistrictId==0){
+			alert("Please select District");
+			return false;
+		}else{
+			return true;
+		}
+	}else if(roleId==16){
+		if(selectedDivisionId==0){
+			alert("Please select Division");
+			return false;
+		}else{
+			return true;
+		} 
+	}
+	else if(roleId==18){
+		if(selectedMandalId==0){
+			alert("Please select Mandal");
+			return false;
+		}else{
+			return true;
+		} 
+	}
+	
+	
+	else{
+	if (selectedListSize == 0 && villagesList >= 1) {
+		alert("Please select Village");
+		return false;
+	} else if (selectedListSize == 0 && villagesList == 0) {
+		alert("All Villages are assigned.");
+		return false;
+	} else if (desigantionId == 5 && selectedListSize > 1) {
+		// alert(desigantionId);
+		alert("VRO can Assign only one village");
+		return false;
+	} else {
+		var assignedLocationTableSize = document.getElementById("locationDet").rows.length;
+		if (desigantionId == 5 && assignedLocationTableSize == 2 && selectedListSize >= 1) {
+			// alert(desigantionId);
+			alert("VRO can Assign only one village");
+			return false;
+		}
+	}
+	}
+	return true;
+}
+// Validation for Search in Edit User
+function searchData() {
+	debugger;
+	var loginId = "";
+	loginId = document.getElementById("loginId").value;
+	var result = checkLoginId(loginId);
+	var result1=checkRole(loginId);
+	if (loginId == "") {
+		alert("Please Enter Login Id.");
+	} else {
+
+		// alert(result);
+		if (result > 0) {
+			// alert("editUserDetails?loginId="+loginId);
+			document.editUser.action = "editUserDetails?loginId=" + loginId.toLowerCase();
+			document.editUser.method = "POST";
+			document.editUser.submit();
+		} else if (result == 0) {
+			alert("Login Id does not exist");
+			return false;
+		}
+		else if (result1 == 0) {
+			alert("You dont have right to search this login.");
+			return false;
+		}
+	}
+}
+
+function checkLoginId(loginId) {
+
+	var url = "checkLoginId?loginId=" + loginId;
+	var value = 0;
+
+	$.ajax({
+		url : url,
+		type : "GET",
+		async : false,
+		dataType : 'json',
+		success : function(result) {
+			value = result;
+		}
+
+	});
+	return value;
+
+}
+// Validation for Search in User Assign Location
+function getAssignLoc() {
+	debugger;
+	var flag="location";
+	var loginId = $("#userLoginId").val();
+	var result = checkLoginId(loginId);
+	var result1=checkRole(loginId);
+	var result3=checkRoleData(loginId,flag);
+	if (loginId == "") {
+		alert("Please Enter Login Id.");
+	} else {
+
+		// alert(loginId);
+		if (result > 0 && result1>0) {
+			document.saveRequest.action = "editUserDetailsForLocation?loginId="+ loginId;
+			document.saveRequest.method = "POST";
+			document.saveRequest.submit();
+		} else if(result==0){
+			alert("Login Id does not exist");
+			return false;
+		}
+		else if (result3 >0) {
+			if(result1==0)
+				{
+			alert("You dont have right to search this login.");
+			return false;
+				}
+		}
+	}
+}
+// Validation for Search in User Assign Role
+function getUserDetails() {
+	debugger;
+	var flag="role";
+	// alert("in function");
+	if (!!document.getElementById("roleTableNew")) {
+		// document.getElementById("roleTableNew").style.display="none";
+	}
+	var userName = document.getElementById("loginId").value;
+
+	var param = "userName=" + userName;
+	var result = checkLoginId(userName);
+	var result1=checkRole(userName);
+
+	var result3=checkRoleData(userName,flag);
+	if (userName == "") {
+		alert("Please Enter Login Id.");
+		return false;
+	} else if (result == 0) {
+		alert("Login Id does not exist");
+		return false;
+	} 
+else if (result3 > 0) {
+	if(result1==0)
+		{
+		alert("you dont have permission to search this login");
+		return false;
+		}
+	} 
+	else {
+		document.saveRequest.action = "editUserDetailsForRole?loginId="
+				+ userName;
+		document.saveRequest.submit();
+		// UploaddMultipartData("userId","getUserDetails?userName="+userName,param);
+	}
+}
+
+//sahbaj code
+//var contextPath="http://localhost:8080/dharani/";
+
+function getDetailsOfInventoryGovtLands() {
+	var ischecked = document.getElementById('isChecked').checked;
+	var surveyNumber = null;
+	if (ischecked == false)
+		surveyNumber = $('#surveyNumber').val();
+	var villageId = $('#villageId').val();
+	/*
+	 * alert(surveyNumber); alert(villageId);
+	 */
+
+	loadLocTbl('divInventory', 'getDetailsOfInventoryGovtLands?surveyNumber='
+			+ surveyNumber + '&villageId=' + villageId + '&isChecked='
+			+ ischecked);
+
+	// getCountOfSurveyNosInVillage();
+
+}
+function getCountOfSurveyNosInVillage() {
+	var villageId = $("#villageId").val();
+	// alert(villageId);
+	loadLocTbl('divInventory', 'getCountOfSurveyNumbers?villageId=' + villageId);
+}
+function getPdfInInventory() {
+	var Districe = $("#divisionId option:selected").text();
+	// alert(Districe);
+	document.requestForm.action = "generatepdfForInventory?villageId="
+			+ $("#villageId ").val();
+	document.requestForm.submit();
+
+}
+function getDataOnModal(value) {
+	// $('#myModal').modal('show');
+	//alert(value);
+	
+	var district = $("#dashboardId option:selected").text();
+	var division = $("#divisionId option:selected").text();
+	var mandal = $("#mandalId option:selected").text();
+	var village = $("#villageId option:selected").text();
+	
+	
+	var villageId = $('#villageId').val();
+	// alert(villageId);
+	// alert($('#surveyNumber option:selected").text()'));
+	if ($("#dashboardId").val() == 0) {
+		alert("Please select District")
+		// $('#labelid').html("Please select District");
+		return false;
+	}
+	if ($("#divisionId").val() == 0 || $("#divisionId").val() == null) {
+		alert("Please select Division")
+		// $('#labelid').html("Please select District");
+		return false;
+	}
+	if ($("#mandalId").val() == 0 || $("#mandalId").val() == null) {
+		alert("Please select Mandal")
+		// $('#labelid').html("Please select District");
+		return false;
+	}
+	if ($("#villageId").val() == 0 ||$("#villageId").val() == null ) {
+		alert("Please select Village")
+		// $('#labelid').html("Please select District");
+		return false;
+	}
+	
+	var surveyNumber=$("#surveyNumber").val();
+	//alert(surveyNumber);
+	if (surveyNumber == "0" && value=='వివరాలను పొందండి') {
+		alert("Please select Survey Number");
+		//isChecked=false;
+		// $('#labelid').html("Please select District");
+		return false;
+	}
+	else
+		{
+			//isChecked=true;
+	inventoryModal.setAttribute("data-target", "#myModal");
+		}
+	
+	if (surveyNumber == "0" && value=='Get Details') {
+		alert("Please select Survey Number");
+		//isChecked=false;
+		// $('#labelid').html("Please select District");
+		return false;
+	}
+	else
+		{
+			//isChecked=true;
+	inventoryModal.setAttribute("data-target", "#myModal");
+		}
+	$("#selectedDistrict").text(district);
+	$("#selectedVision").text(division);
+	$("#selectedMandal").text(mandal);
+	$("#selectedVillage").text(village);
+	
+	
+
+	var htmlDataaa = "";
+	var url = "";
+debugger;
+
+	if ((value == "Get Details" ||value=='వివరాలను పొందండి' ) && $('#surveyNumber').val() != null )
+		url = "getDetailsOfInventoryGovtLands?surveyNumber="+$('#surveyNumber option:selected').text()+ "&villageId="+ villageId + "&isChecked=false";
+	else
+		url = "getDetailsOfInventoryGovtLands?surveyNumber=null&villageId="+ villageId + "&isChecked=true";
+
+	
+	if ($('#dashboardId').val() != "0" && $('#divisionId').val() != "0" && $('#mandalId').val() != "0" && $('#villageId').val() != "0") {
+		
+				$.ajax({
+					url : url,
+					type : "GET",
+					dataType : 'json',
+
+					success : function(result) {
+						$("#VillageName").text(village);
+						//alert(result.length);
+						debugger;
+						if (value == "View Govt Land Inventory" || value=="ప్రభుత్వ భూములు జాబితాను వీక్షించండి") {
+							
+							if(result.length==0)
+								{
+								document.getElementById("download").disabled = true;
+								$("#popupData").html("<tr><td class='text-center' colspan='5'>No Records are Available</td></tr>");
+							return false;
+							
+							}
+							else
+								{
+								document.getElementById("download").disabled = false;
+								inventoryModal.setAttribute("data-target", "#myModal");
+								}
+						}
+						for (var i = 0; i <result.length; i++) {
+
+							if (value == "View Govt Land Inventory" ||value == "ప్రభుత్వ భూములు జాబితాను వీక్షించండి" ) {
+								
+								
+								htmlDataaa = htmlDataaa + "<tr>"
+										+ "<td align='right'>" + (i + 1)
+										+ "</td>" + "<td align='right'>"
+										+ result[i].sno + "</td>"
+										+ "<td align='right'>"
+										+ result[i].extent_of_land.toFixed(4)
+										+"</td>"
+										+ "<td align='left'>"+result[i].natureOfLand_en+"|"+result[i].natureOfLand_telugu+"</td>" +
+
+										"</tr>";
+									
+							
+									
+							} else {
+								
+								$("#snoinventory").text(result[i].sno);
+								$("#surveynoinventory").text(result[i].extent_of_land.toFixed(4));
+							/*	htmlDataaa = htmlDataaa
+										+ "<tr>"
+										+
+
+										"<td align='right'>"
+										+ result[i].sno
+										+ "</td>"
+										+ "<td align='right'>"
+										+ result[i].extent_of_land.toFixed(4)
+										+ "</td>"
+										
+										+ "<td class='left'><div class='col-md-12'>"
+										+ "<span class='col-md-4'> <span class='col-md-4'><input  id='fileNumber' class='form-control' required type='text' maxlength='15' minlength='15' style='width:150px' onkeyup='fileNumberValidation(this.value)'></div></td>"
+										+"<td class='text-center'><input type='text' name='txtDate' id='txtDate' class='form-control' onclick='fordatepicker();dateValidation();'></td>"
+										+ "<td><select class='form-control' style='width:100px'><option value='collector' selected>Collector</option></select></td>"
+										+ "<td><a data-toggle='tooltip' title='File size is not greater than 2 MB(jpeg or pdf)'><input type='file' id='documentFle1' name='documentFle' onchange='validatefileAdmindashboard(this.id)'/></a></td>"
+										+	"</tr>";*/
+								
+								
+
+							}
+
+						}
+						countOfAllSurveyNumbersInInventory();
+						countOfExtentInInventory();
+						countOfAllGovtNumbersInInventory();
+						countOfGovtExtentInInventory();
+						// alert(htmlDataaa);
+						//console.log(htmlDataaa);
+						
+						if (value == "Get Details" || value=='వివరాలను పొందండి'){
+							
+						//	$("#inventoryData").html(htmlDataaa);
+						$("#surveyDetails").show();
+						$("#countSummary").show();
+						$("#surveyDetailsRemarks").show();
+						$("#surveyDetailsSubmit").show();
+						
+						}
+						else
+							{
+							$("#popupData").html(htmlDataaa);
+							inventoryModal.removeAttribute("data-target");
+							}
+
+					}
+				
+				});
+				
+				
+				
+	}
+}
+
+var totalSurveyNumbers = 0;
+var otherExtentOfLand = 0.0;
+function countOfAllSurveyNumbersInInventory() {
+	var url = "getCountOfSurveyNumbers?villageId="
+			+ $('#villageId').val();
+	var i = 1;
+	$.ajax({
+		url : url,
+		type : "GET",
+		dataType : 'json',
+		async : false,
+		success : function(result) {
+			// alert(result.length);
+			if(result.length>0)
+				{
+			totalSurveyNumbers = result[0].count;
+			otherExtentOfLand = result[0].extent_of_land;
+			var totalResult = result[0].count + " & "
+					+ result[0].extent_of_land.toFixed(4) + " Acres";
+			// alert(totalResult);
+			//$("#typeininventory").text("Total");
+			$("#totalsnoininventory").text(result[0].count);
+			//$("#totalsnoareaininventory").text(result[0].extent_of_land.toFixed(4));
+				}
+			
+
+			// alert(totalSurveyNumbers);
+		}
+	// $("#inventoryData").html(htmlDataaa);
+
+	});
+}
+function countOfAllGovtNumbersInInventory() {
+	
+	var url = "getCountOfGovtLands?villageId="
+			+ $('#villageId').val() + "&land_type_id=" + 3;
+	var i = 1;
+	$.ajax({
+		url : url,
+		type : "GET",
+		dataType : 'json',
+
+		success : function(result) {
+if(result[0].extent_of_land==null)
+	{
+	result[0].extent_of_land=0;
+	}
+			var totalResult = result[0].count + " & "
+					+ result[0].extent_of_land.toFixed(4) + " Acres";
+
+			//$("#govttypeininventory").text("Government");
+			$("#govttotalsnoininventory").text(result[0].count);
+		//	$("#govttotalsnoareaininventory").text(result[0].extent_of_land.toFixed(4));
+
+			var value = totalSurveyNumbers - result[0].count;
+			var extentofland = otherExtentOfLand - result[0].extent_of_land;
+			var totalResult1 = value + " & " + extentofland.toFixed(4)
+					+ " Acres";
+			//$("#othertypeininventory").text("Other");
+			$("#othertotalsnoininventory").text(value);
+			//$("#othertotalsnoareaininventory").text(extentofland.toFixed(4));
+
+			// $("#countOfOtherGovtExtentOfLand").text(extentofland);
+			// countOfOtherGovtExtentOfLand
+		}
+	// $("#inventoryData").html(htmlDataaa);
+
+	});
+}
+function surveyNumbersForInventory() {
+	debugger;
+	var htmlData = "";
+	//alert($("#identify").text());
+	//document.getElementById('isChecked').checked=true;
+	if($("#identify").text()=="Village*")
+		{
+		htmlData = htmlData+ "<option value=0>--Select--</option>";
+		}
+	else 
+		{
+		htmlData = htmlData+ "<option value=0>సర్వే సంఖ్యను ఎంచుకోండి</option>";
+		}
+	var url = "surveyNumberForInventory?villageId="+ $('#villageId').val();
+	
+	$
+			.ajax({
+				url : url,
+				type : "GET",
+				dataType : 'json',
+
+				success : function(result) {
+					
+					
+					for (var i = 0; i < result.length; i++) {
+						htmlData = htmlData + "<option value=" + result[i].sno
+								+ ">" + result[i].sno + "</option>"
+					}
+					$("#surveyNumber").html(htmlData);
+				}
+
+			});
+
+}
+
+//shahbaj code
+
+function validatefileAdmindashboard(input){
+	debugger;
+    var max_length = 2097152; 
+	imageVal = document.getElementById(input).value.split('.');
+	
+	var ext = imageVal[imageVal.length - 1].toLowerCase();
+	if(input="documentFle1")
+		{
+		if ((ext != 'jpg') &&  (ext != 'pdf')) {
+			alert("Please Upload jpeg,pdf file only.");
+			document.getElementById(input).value = "";
+			return false;
+		}
+		}
+	else if ((ext != 'jpg') && (ext != 'jpeg')
+			&& (ext != 'png')) {
+		alert("Please Upload jpg,jpeg,png file only.");
+		document.getElementById(input).value = "";
+		return false;
+	}
+	var filesize = (document.getElementById(input).files[0].size);
+	if (filesize > max_length) {
+
+		alert("File Size cannot be greater than 2 MB.");
+		
+		document.getElementById(input).value = "";
+		
+		return false;
+	}
+	
+}
+	 function validateImageSize() {
+		
+   	  var max_length=30000;
+   	  var filesize = document.getElementById("file").files[0].size;
+   	  var imageVal=document.getElementById("file").value.split('.')
+   	   var ext = imageVal[imageVal.length - 1].toLowerCase();
+	  if ((ext != 'jpg') && (ext != 'jpeg')
+			&& (ext != 'png')) {
+		alert("Please Upload jpg,jpeg,png file only.");
+		document.getElementById("file").value = "";
+		return false;
+	}
+ 		  if (filesize > max_length) {
+ 			
+ 			alert("File Size Must be Less than 30 KB.");
+ 			
+ 			document.getElementById("file").value = "";
+ 			
+ 			return false;
+ 		} 
+ 		  
+	 }
+	 $('#txtDate').datepicker({
+  	    format: 'dd/mm/yyyy',
+  	    autoclose: true,
+  	  todayHighlight: true,
+          endDate: new Date()
+          
+  	});
+	 var today=new Date();
+	 
+	function fordatepicker()
+	{
+		debugger;
+		 var today = new Date();
+	   
+	     //var selectdate = new Date(date[2], date[1]-1, date[0]);
+	 /* $('#txtDate').datepicker({
+	     	    format: 'dd/mm/yyyy',
+	     	    autoclose: true,
+	     	 
+	             endDate: today
+	             
+	     	});*/
+	}
+    
+	/* function dateValidation()
+	 {
+		 debugger;
+		// $('#txtDate').datepicker();
+	 var dtToday = new Date();
+	    
+	    var month = dtToday.getMonth() + 1;
+	    var day = dtToday.getDate();
+	    var year = dtToday.getFullYear();
+	    if(month < 10)
+	        month = '0' + month.toString();
+	    if(day < 10)
+	        day = '0' + day.toString();
+	    
+	    var maxDate = day + '/' + month + '/' + year;
+	   //alert(maxDate);
+	    $('#txtDate').attr('max', maxDate); 
+	 // $('#txtDate').val(maxDate);  
+	    
+	    var ordereddate=document.getElementById("txtDate").value;
+	    //alert(ordereddate);
+	    if(ordereddate>maxDate)
+	    	{
+	    	alert("Order date must be less than current date");
+	    	document.getElementById("txtDate").value=null;
+	    	return false;
+	    	}
+	 }*/
+	 function fileNumberValidation(value){
+		 debugger;
+    	 var re = new RegExp("^[a-zA-Z0-9]+([a-zA-Z-0-9/])*$");
+    	 //alert(re.test(value));
+	        if (re.test(value)==true)
+	        	$("#fileNumber").val(value);
+	        else{
+	        	$("#fileNumber").val(value.substring(0,(value.length -1)));
+	        	alert("It doesn't allow some special characters");
+	        	}
+	 
+     }
+	 function countOfAllSurveyNumbersInInventory() {
+			var url = "getCountOfSurveyNumbers?villageId="
+					+ $('#villageId').val();
+			var i = 1;
+			$.ajax({
+				url : url,
+				type : "GET",
+				dataType : 'json',
+				async : false,
+				success : function(result) {
+					// alert(result.length);
+					if(result.length>0)
+						{
+					totalSurveyNumbers = result[0].count;
+					
+					var totalResult = result[0].count + " & "
+							+ result[0].extent_of_land.toFixed(4) + " Acres";
+					// alert(totalResult);
+					//$("#typeininventory").text("Total");
+					$("#totalsnoininventory").text(result[0].count);
+					$("#totalsnoareaininventory").text(result[0].extent_of_land.toFixed(4));
+						}
+					
+
+					// alert(totalSurveyNumbers);
+				}
+			// $("#inventoryData").html(htmlDataaa);
+
+			});
+		}
+	 
+	 function countOfExtentInInventory() {
+			var url = "allExtentCountininventoryGvtLand?villageId="
+					+ $('#villageId').val();
+			var i = 1;
+			$.ajax({
+				url : url,
+				type : "GET",
+				dataType : 'json',
+				async : false,
+				success : function(result) {
+					// alert(result.length);
+					otherExtentOfLand=result;
+					
+					$("#totalsnoareaininventory").text(result.toFixed(4));
+
+					// alert(totalSurveyNumbers);
+				}
+			// $("#inventoryData").html(htmlDataaa);
+
+			});
+		}
+	 function countOfGovtExtentInInventory() {
+		 var data="";
+		 debugger;
+			var url = "allGovtExtentCountininventoryGvtLand?villageId="
+					+ $('#villageId').val()+"&land_type_id=3";
+			var i = 1;
+			$.ajax({
+				url : url,
+				type : "GET",
+				dataType : 'json',
+				async : false,
+				success : function(result) {
+					otherExtentOfLand= otherExtentOfLand - result;
+					$("#govttotalsnoareaininventory").text(result.toFixed(4));
+					$("#othertotalsnoareaininventory").text(otherExtentOfLand.toFixed(4));
+					
+				}
+			});
+			console.log(data);
+		}
+	 
+	 function validateSignatureSize() {
+			
+	   	  var max_length=15000;
+	   	  var filesize = document.getElementById("signature").files[0].size;
+	   	  var imageVal=document.getElementById("signature").value.split('.')
+	   	  var ext = imageVal[imageVal.length - 1].toLowerCase();
+	   	  
+		  if ((ext != 'jpg') && (ext != 'jpeg')&& (ext != 'png')) {
+			alert("Please Upload jpg,jpeg,png file only.");
+			document.getElementById("signature").value = "";
+			return false;
+		}
+	 		  if (filesize > max_length) {
+	 			alert("File Size Must be Less than 15 KB.");
+	 			document.getElementById("signature").value = "";
+	 			return false;
+	 		} 
+	 		  
+		 }
+	 function checkLoginId1(loginId) {
+		 debugger;
+		 	var url = "checkLoginId?loginId=" + loginId;
+		 	var value = 0;
+
+		 	$.ajax({
+		 		url : url,
+		 		type : "GET",
+		 		async : false,
+		 		dataType : 'json',
+		 		success : function(result) {
+		 			if(result==1){
+		 				alert("Login already exists");
+		 				$("#userLoginId").val("");
+		 				return false;
+		 			}
+		 		}
+		 	});
+		 }
+
+	function getKhataDetailsFamilyTree(villId) {
+		 debugger;
+			chakriAdd();
+			loadLocTbl('khataId', 'getKhataForPahaniFamilyTree?villId=' + villId, 'villId='
+					+ villId);
+		}
+function	 getSurveyDetailsFamilyTree(villId, flag){
+	debugger;
+			chakriAdd();
+			loadLocTbl('surveyIdselect', 'getSurveyForPahaniFamilyTree?villId=' + villId
+					+ '&flag=' + flag, 'villId=' + villId + '&flag=' + flag);
+
+	 }
+
+
+//-----------------------------------------ASSIGN SURVEY NUMBER-----------------------------------------
+function finalizeDetail(value) {
+	
+	debugger;
+	 
+	var surNoList = document.getElementsByName('surveyNoVroPdf');
+	   for(var i = 1; i <= surNoList.length; i++) {
+		   var totAlloted = parseFloat(document.getElementById('extendofLnadTotalbyUser' + i).value);
+		   var tolExt = parseFloat(document.getElementById('extentSurveyWise' + i).value);
+		   if(totAlloted != tolExt) {
+			   alert('Total area alloted is less.');
+			   return false;
+		   }
+	   }
+	   if(value!="0")
+		{
+	var conf = confirm("Do you want to confirm the entered details?");
+	
+	
+	}
+	   else conf=true;
+   	if(!conf) {
+   		return false;
+   	}
+   	
+	var table = document.getElementById('parentKhataSurveyLink');
+   	var rows = table.rows.length;
+   	
+   	var surExt = document.getElementsByName('stmtTotExt');
+   	//var surNoList = document.getElementsByName('surveyNoVroPdf');
+   	var appList = document.getElementsByName('appName');
+   	var repRidList = document.getElementsByName('reportRid');
+   	
+   	for(var i = rows-1; i > 0; i--) {
+   		table.deleteRow(i);
+   	}
+   	rows = table.rows.length;
+   	
+   	//------FOR EXISTING------
+   	if(rows > 1) {
+   		
+	   	var repRid = '';
+	 	var index = 0;
+	var flag = 0;
+	var repRidWip = '';
+	var getRepId = '';
+	var appRidForAdd = '';
+	
+	var surTotalEx = '';
+	var surTotalExId = '';
+	
+	//ROWS EXISTING AND PROVIDING SHARE 0
+	for(var y = 0; y < surExt.length; y++) {
+		surTotalEx = surExt[i].value;
+		surTotalExId = surExt[i].id;
+		var innerRow = surTotalExId.split('@')[1];
+		var innerCol = surTotalExId.split('@')[2];
+		if(surTotalEx == 0) {
+			var innerRepRid = document.getElementById('reportRid@' + innerRow + '@' + innerCol).value;
+			for(var x = 1; x < rows; x++) {
+				var repRidToMatch = document.getElementById('finalReportRid@' + x).value;
+				if(repRidToMatch == innerRepRid) {
+					alert(x);
+				}
+			}
+			
+		}
+	}
+	//-----------------------------------
+   		
+   		for(var i = 0; i < repRidList.length; i++) {
+   			repRid = repRidList[i].value;
+   			getRepId = repRidList[i].id;
+   			var iInner = getRepId.split('@')[1];
+   			var jInner = getRepId.split('@')[2];
+   			flag = 0;
+   			for(var j = 1; j < rows; j++) {
+   				repRidWip = document.getElementById('finalReportRid@' + j).value;
+   				
+   				if(repRid == repRidWip) {
+   					flag = 1;
+   				}
+   			}
+   			
+   			if(flag == 0) {
+   				//alert("add row for :: " + repRid);
+   				//alert("i :: " + iInner);
+   				//alert("j :: " + jInner);
+   				
+   				//-------------------------------------------ROW ADD-------------------------------
+   				appRidForAdd = document.getElementById('appRid@' + iInner).value;
+   				surNoForAdd = document.getElementById('surveyNoVroPdf' + jInner).value; 
+   				//SEARCH FOR KHATANUMBER AND SURVEY COUNT
+   				var khataNumberExisting = '';
+   				var count = 0;
+   				//var rowNoCount = '';
+   				for(var x = 1; x < rows; x++) {
+   					var searchRid = document.getElementById('finalAppRid@' + x).value;
+   					var searchSur = document.getElementById('baseSurveyNo@' + x).value;
+   					if(searchRid == appRidForAdd) {
+   						khataNumberExisting = document.getElementById('finalKhataNumber@' + x).value;
+   						//rowNoCount = x;
+   						//break;
+   					}
+   					if(searchSur == surNoForAdd) {
+   						count++;
+   					}
+   					
+   					
+   				}
+   				//alert(rowNoCount);
+   				if(document.getElementById('stmtTotExt@' + iInner + '@' + jInner).value.trim() != 0) {
+   					addRowFinalizeDet(iInner, jInner, count, khataNumberExisting);
+   				}
+   					
+   				
+   				//---------------------------------------------------------------------------------
+   			}
+   		}
+   		
+   		var k = 1;
+   		var flag = 0;
+   		var isEdited = 0;
+   		
+   		for(var i = 1; i < rows; i++) {
+   			isEdited = document.getElementById('isEdited@' + i).value;
+   			if(isEdited == '1') {
+   				flag = 1;
+   				var ext = document.getElementById('finalTotalExtentOfLand@' + i).value;
+   				var orgExt = document.getElementById('finalTotalExtent@' + i).value;
+	   			var finRepRid = document.getElementById('finalReportRid@' + i).value;
+	   				
+   				table.rows[i].cells[4].innerHTML = ext
+					//"<input class='form-control text-right' onfocus='showRemArea(this.id);' onkeypress='return checkForNumber(event, this.value);' onblur='calculateArea(this.id, this.value);' type='text' name='finalTotalExtent' id='finalTotalExtent@${cnt.count}' value='"+ext+"' />"
+	       			+"<input type='hidden' name='finalTotalExtentOfLand' id='finalTotalExtentOfLand@"+i+"' value='"+ext+"' />"
+	       			+"<input type='hidden' name='finalTotalExtent' id='finalTotalExtent@"+i+"' value='"+orgExt+"' />"
+	       			+"<input type='hidden' name='finalReportRid' id='finalReportRid@"+i+"' value='"+finRepRid+"' />";
+       			
+   			}
+   			
+   		}
+   		if(flag == 0) {
+   			alert("No changes have been made.");
+   			return false;
+   		}
+   		
+   		return false;
+   	}
+   	
+   	//------------------------
+   	
+   	document.getElementById('parentKhataSurveyLink').style.display="";
+   	document.getElementById('parentKhataSurveyDiv').style.display="";
+   	var pTable = document.getElementById('pTableId');
+   	var pRows = pTable.rows.length;
+   	//alert("pTableId----" + pRows);
+   	
+   	//alert("parentKhataSurveyLink---" + rows);
+   	
+   	/* for(var i=0; i < appList.length; i++) {
+   		//alert("doc----" + surExt[i].value);
+   	} */
+   	
+   	for(var i = rows-1; i > 0; i--) {
+   		table.deleteRow(i);
+   	}
+   	
+	
+	
+   	var subDiv = 1;
+   	for(var i=1; i <= appList.length; i++) {
+   		
+   		for(var j = 1; j <= surNoList.length; j++) {
+   			
+   			var surEx = document.getElementById('stmtTotExt@' + i + '@' + j).value.trim();
+   			if(surEx == 0) {
+   				continue;
+   			}
+   			
+   			addRowFinalizeDet(i, j, subDiv, '');
+			
+   		}
+   		subDiv++;
+   	}
+}
+
+
+function addRowFinalizeDet(i, j, subDiv, khataNumberExisting) {
+	
+var oCell = null;
+var linkInnerHTML = null;
+var obj = document.getElementById('parentKhataSurveyLink');
+var tempVal='';
+var noRows=obj.rows.length;
+var rowId=noRows;
+var newRowCount = '';
+
+
+
+
+//FOR FETCHING NUMBER OF SUBDIVISIONS
+var appList = document.getElementsByName('appName');
+var surNoList = document.getElementsByName('surveyNoVroPdf');
+var surCounterMap = {};
+for(var ii=1; ii <= appList.length; ii++) {
+		for(var jj = 1; jj <= surNoList.length; jj++) {
+			var surNo = document.getElementById('surveyNoVroPdf' + jj).value;
+			var extent = parseFloat(document.getElementById('stmtTotExt@' + ii + '@' + jj).value);
+			
+			if(surNo in surCounterMap && extent != 0) {
+				var count = surCounterMap[surNo];
+				count++;
+				surCounterMap[surNo] = count;
+			} else if(!(surNo in surCounterMap) && extent != 0) {
+				surCounterMap[surNo] = 1;
+			} 
+		}
+}
+for (var key in surCounterMap) {
+	  console.log("key " + key + " has value " + surCounterMap[key]);
+}
+
+
+	newRowCount = document.getElementById('parentKhataSurveyLink').rows.length;
+
+		
+	newRow = obj.insertRow(newRowCount);
+	newRow.style.width="100%";
+	
+	oCell = newRow.insertCell(-1);
+	oCell.style.width="6%";
+	oCell.className="text-left";
+	oCell.innerHTML = newRowCount//serial number
+						+ "<input type='hidden' name='isExisting' id='isExisting@"+newRowCount+"' value='0' />"
+						+ "<input type='hidden' name='isEdited' id='isEdited@"+newRowCount+"' value='0' />";
+	
+	
+	var appRid = document.getElementById('appRid@' + i).value.trim();
+	var appName = document.getElementById('appName@' + i).value.trim();
+	oCell = newRow.insertCell(-1);
+	oCell.style.width="6%";
+	oCell.innerHTML = 	appName
+						+"<input type='hidden' name='wipPattadarId' id='wipPattadarId@"+newRowCount+"' value='"+appRid+"' />"
+		       			+"<input type='hidden' name='finalApplicantName' id='finalApplicantName@"+newRowCount+"' value='"+appRid+"#"+appName+"' />"
+		       			+"<input type='hidden' name='finalAppRid' id='finalAppRid@"+newRowCount+"' value='"+appRid+"' />";//Legal Heirs / Family Members
+		       		
+	
+	var finKhataNo = '';
+	var khataNoToDis = '';
+	if(khataNumberExisting == '') {
+		khataNoToDis = document.getElementById('appKhataNo@' + i).value.trim();
+		finKhataNo = document.getElementById('appKhataNo@' + i).value.trim() == '' ? '-' : document.getElementById('appKhataNo@' + i).value.trim();
+	} else {
+		khataNoToDis = khataNumberExisting == '-' ? '' : khataNumberExisting;
+		finKhataNo = khataNumberExisting == '' ? '-' : khataNumberExisting;;
+	}	       			
+	
+	oCell = newRow.insertCell(-1);
+	oCell.style.width="6%";
+	oCell.className="text-left";
+	oCell.innerHTML = 	khataNoToDis
+						+"<input type='hidden' name='finalKhataNumber' id='finalKhataNumber@"+newRowCount+"' value='"+finKhataNo+"' />";//khata
+	
+
+	var finSurNo = '';
+	var baseSurNo = document.getElementById('surveyNoVroPdf' + j).value.trim();
+	var baseSurTotExt = document.getElementById('extentSurveyWise' + j).value.trim();
+	var telSubDiv = '';
+	var lastChar = baseSurNo[baseSurNo.length -1];
+	if(!isNaN(lastChar)) {
+		telSubDiv = getTelChar(subDiv);
+	} else {
+		telSubDiv = subDiv;
+	}
+	
+	
+	
+	if(khataNumberExisting == '') {
+		/*if(i == 1) {
+			finSurNo = document.getElementById('surveyNoVroPdf' + j).value.trim();	
+		} else if(surCounterMap[baseSurNo] == 1) {
+			finSurNo = document.getElementById('surveyNoVroPdf' + j).value.trim();
+		} else {
+			finSurNo = document.getElementById('surveyNoVroPdf' + j).value.trim() + '/' + subDiv;
+		}*/
+		if(appList.length == 1 || surCounterMap[baseSurNo] == 1) {
+			finSurNo = document.getElementById('surveyNoVroPdf' + j).value.trim();
+		} else {
+			finSurNo = document.getElementById('surveyNoVroPdf' + j).value.trim() + '/' + telSubDiv;
+		}
+	} else {
+		if(appList.length == 1) {
+			finSurNo = document.getElementById('surveyNoVroPdf' + j).value.trim();
+		} else {
+			finSurNo = document.getElementById('surveyNoVroPdf' + j).value.trim() + '/' + telSubDiv;
+		}
+	}
+	
+	
+	oCell = newRow.insertCell(-1);
+	oCell.style.width="6%";
+	oCell.className="text-left";
+	oCell.innerHTML = 	finSurNo 
+						+"<input type='hidden' name='finalSurveyNumber' id='finalSurveyNumber@"+newRowCount+"' value='"+finSurNo+"' />"
+						+"<input type='hidden' name='baseSurveyNo' id='baseSurveyNo@"+newRowCount+"' value='"+baseSurNo+"' />"
+						+"<input type='hidden' name='wipBaseTotalExtent' id='wipBaseTotalExtent@"+newRowCount+"' value='"+baseSurTotExt+"' />";//survey
+
+
+	var ext = document.getElementById('stmtTotExt@' + i + '@' + j).value.trim();
+	var finRepRid = document.getElementById('reportRid@' + i + '@' + j).value.trim();
+	oCell = newRow.insertCell(-1);
+	oCell.style.width="6%";
+	oCell.className="text-left";
+	oCell.innerHTML = 	ext
+						//"<input class='form-control text-right' onfocus='showRemArea(this.id);' onkeypress='return checkForNumber(event, this.value);' onblur='calculateArea(this.id, this.value);' type='text' name='finalTotalExtent' id='finalTotalExtent@${cnt.count}' value='"+ext+"' />"
+	       			+"<input type='hidden' name='finalTotalExtentOfLand' id='finalTotalExtentOfLand@"+newRowCount+"' value='"+ext+"' />"
+	       			+"<input type='hidden' name='finalTotalExtent' id='finalTotalExtent@"+newRowCount+"' value='"+ext+"' />"
+	       			//+"<span id='remArea@${cnt.count}'></span>";//total land
+					+"<input type='hidden' name='finalReportRid' id='finalReportRid@"+newRowCount+"' value='"+finRepRid+"' />";
+
+}
+
+function modifyExtent(id, value) {
+	
+	var rowId = id.split('@')[1];
+	var colId = id.split('@')[2];
+	
+	var appRid = document.getElementById('appRid@' + rowId).value;
+	var surveyNo = document.getElementById('surveyNoVroPdf' + colId).value.trim();
+	
+	var table = document.getElementById('parentKhataSurveyLink');
+   	var rows = table.rows.length;
+   	
+   	if(rows <= 1) {
+   		return false;
+   	}
+   	var surExt = document.getElementsByName('stmtTotExt');
+   	var surNoList = document.getElementsByName('surveyNoVroPdf');
+   	var appList = document.getElementsByName('appName');
+   	var repRidList = document.getElementsByName('reportRid');
+   	
+   	if(surExt.length >= rows) {
+   		
+   		for(var i = 1; i < rows; i++) {
+   			if(document.getElementById('finalReportRid@' + i).value == document.getElementById('reportRid@' + rowId + '@' + colId).value) {
+   				document.getElementById('finalTotalExtentOfLand@' + i).value = value;
+   				document.getElementById('isEdited@' + i).value = '1';
+   			}
+   		}
+   		return false;
+   	}
+   	
+ 	var tblIndex = 0;
+   	
+   	var repRid = document.getElementById('reportRid@' + rowId + '@' + colId).value;
+   	for(var i = 1; i < rows; i++) {
+   		var currSurNo = document.getElementById('baseSurveyNo@' + i).value;
+   		var currRid = document.getElementById('finalAppRid@' + i).value;
+   		if(appRid == currRid && surveyNo == currSurNo) {
+   			document.getElementById('finalTotalExtentOfLand@' + i).value = value;
+   			document.getElementById('finalReportRid@' + i).value = repRid;
+   			tblIndex = i;
+   		}
+   	}
+   	
+ 	document.getElementById('isEdited@' + tblIndex).value = '1';
+}
+
+function sumOfExten(obj,val){
+debugger;
+ var id = obj.split('@')[0];
+ var row = obj.split('@')[1];
+ var col = obj.split('@')[2];
+ var totalrow =  document.getElementsByName('appName');
+ 
+ 	var guntaCheck = parseInt(parseFloat(val).toFixed(4).split('.')[1])/1000;
+	if(guntaCheck > 4) {
+		alert("Kindly enter decimal value upto 4000");
+		document.getElementById(obj).value = '';
+		document.getElementById('extendofLnadTotalbyUser'+col).value = '';
+		return false;
+	}
+ if(document.getElementById(obj).value.trim() == '')
+	 document.getElementById(obj).value = 0;
+ 	document.getElementById(obj).value = parseFloat(document.getElementById(obj).value).toFixed(4);
+	var totalsum=0;
+	var acres = 0;
+	for(i=1; i <= totalrow.length; i++){
+		var ext = 0;
+		if(document.getElementById('stmtTotExt@' + i + '@' + col).value == '') {
+			ext = 0;
+		}
+		else {
+			ext = document.getElementById('stmtTotExt@' + i + '@' + col).value;
+		}
+		
+		totalsum += parseFloat(ext);
+		
+	}
+	 acres = convertGuntasToAcres(totalsum.toFixed(4).toString());
+	var totalSurveyExtent = parseFloat(document.getElementById('extentSurveyWise' + col).value);
+	if(parseFloat(acres) > totalSurveyExtent) {
+		alert("Sum of extents cannot be greater than total area.");
+		document.getElementById(obj).value = '';
+		document.getElementById('extendofLnadTotalbyUser' + col).value = '';
+		return false;
+	}
+	else {
+			document.getElementById('extendofLnadTotalbyUser' + col).value = acres.toFixed(4);
+	}
+}
+
+function convertGuntasToAcres(gunta){
+ var sum1 = 0;
+ var a = gunta.split(".");
+ sum1 = sum1 + (parseFloat(a[0])*40) + (parseFloat(a[1])/100);
+ return Math.floor(sum1/40) + ((sum1%40)/100);
+}
+
+function getTelChar(subDiv) {
+	var telSubDiv = '';
+	switch(parseInt(subDiv)) {
+		case 1 : telSubDiv = 'అ';break;
+		case 2 : telSubDiv = 'ఆ';break;
+		case 3 : telSubDiv = 'ఇ';break;
+		case 4 : telSubDiv = 'ఈ';break;
+		case 5 : telSubDiv = 'ఉ';break;
+		case 6 : telSubDiv = 'ఊ';break;
+		case 7 : telSubDiv = 'ఋ';break;
+		case 8 : telSubDiv = 'ౠ';break;
+		case 9 : telSubDiv = 'ఎ';break;
+		case 10 : telSubDiv = 'ఏ';break;
+		case 11 : telSubDiv = 'ఐ';break;
+		case 12 : telSubDiv = 'ఒ';break;
+		case 13 : telSubDiv = 'ఓ';break;
+		case 14 : telSubDiv = 'ఔ';break;
+		case 15 : telSubDiv = 'అం';break;
+		case 16 : telSubDiv = 'అః';break;
+		case 17 : telSubDiv = 'క';break;
+		case 18 : telSubDiv = 'ఖ';break;
+		case 19 : telSubDiv = 'గ';break;
+		case 20 : telSubDiv = 'ఘ';break;
+		case 21 : telSubDiv = 'ఙ';break;
+		case 22 : telSubDiv = 'చ';break;
+		case 23 : telSubDiv = 'ఛ';break;
+		case 24 : telSubDiv = 'జ';break;
+		case 25 : telSubDiv = 'ఝ';break;
+		case 26 : telSubDiv = 'ఞ';break;
+		case 27 : telSubDiv = 'ట';break;
+		case 28 : telSubDiv = 'ఠ';break;
+		case 29 : telSubDiv = 'డ';break;
+		case 30 : telSubDiv = 'ఢ';break;
+		case 31 : telSubDiv = 'ణ';break;
+		case 32 : telSubDiv = 'త';break;
+		case 33 : telSubDiv = 'థ';break;
+		case 34 : telSubDiv = 'ద';break;
+		case 35 : telSubDiv = 'ధ';break;
+		case 36 : telSubDiv = 'న';break;
+		case 37 : telSubDiv = 'ప';break;
+		case 38 : telSubDiv = 'ఫ';break;
+		case 39 : telSubDiv = 'బ';break;
+		case 40 : telSubDiv = 'భ';break;
+		case 41 : telSubDiv = 'మ';break;
+		case 42 : telSubDiv = 'య';break;
+		case 43 : telSubDiv = 'ర';break;
+		case 44 : telSubDiv = 'ల';break;
+		case 45 : telSubDiv = 'వ';break;
+		case 46 : telSubDiv = 'శ';break;
+		case 47 : telSubDiv = 'ష';break;
+		case 48 : telSubDiv = 'స';break;
+		case 49 : telSubDiv = 'హ';break;
+		case 50 : telSubDiv = 'ళ';break;
+		case 51 : telSubDiv = 'క్ష';break;
+		case 52 : telSubDiv = 'ఱ';break;
+	    
+	    default : telSubDiv = ''
+	}
+	return telSubDiv;
+}
+//------------------------------------------------------------------------------------------------------
+function getDivisionMIS(value) {
+	debugger;
+	alert(value);
+	chakriAdd();
+	loadLocTbl('divisionId', 'getDivisionFromDistrictMIS?districtId=' + value
+			+ '&type=11');
+	
+	$('#divisionId').multiselect();
+	/*var mandal = document.getElementById('mandalId');
+	mandal.value = document.getElementById('divisionId').options[0].value;
+	document.getElementById('villageId').value = document
+			.getElementById('divisionId').options[0].value;*/
+
+
+}
+function checkRole(loginId) {
+debugger;
+	var url = "checkRole?loginId=" + loginId;
+	var value = 0;
+
+	$.ajax({
+		url : url,
+		type : "GET",
+		async : false,
+		dataType : 'json',
+		success : function(result) {
+			value = result;
+			//alert(value);
+		}
+
+	});
+return value;
+}
+function checkRoleData(loginId,flag) {
+	 debugger;
+	 	var url = "checkRoleData?loginId=" + loginId+"&flag="+flag;
+	 	var value = 0;
+
+	 	$.ajax({
+	 		url : url,
+	 		type : "GET",
+	 		async : false,
+	 		dataType : 'json',
+	 		success : function(result) {
+	 			value=result;
+	 		}
+
+	 	});
+	 	return value;
+
+	 }
+
+//----------------------SALE--------------------
+function sumOfExtenSale(obj,val){
+debugger;
+ var id = obj.split('@')[0];
+ var row = obj.split('@')[1];
+ var col = obj.split('@')[2];
+ //var totalrow =  document.getElementsByName('appName');
+ var totalrow =  document.getElementById('totalApplicant').value;
+ //countSurvey
+ if(document.getElementById(obj).value.trim() == '')
+	 document.getElementById(obj).value = 0;
+ 	document.getElementById(obj).value = parseFloat(document.getElementById(obj).value).toFixed(4);
+	var totalsum=0;
+	var acres = 0;
+	for(i=0; i < totalrow; i++){
+		var ext = 0;
+		if(document.getElementById('eachSell@' + i + '@' + col).value == '') {
+			ext = 0;
+		}
+		else {
+			ext = document.getElementById('eachSell@' + i + '@' + col).value;
+		}
+		
+		totalsum += parseFloat(ext);
+		
+	}
+	 acres = convertGuntasToAcres(totalsum.toFixed(4).toString());
+	 var colTot = parseInt(col) + 1;
+	var totalSurveyExtent = parseFloat(document.getElementById('totalLand' + colTot).value);
+	if(parseFloat(acres) > totalSurveyExtent) {
+		alert("Sum of extents cannot be greater than total area.");
+		document.getElementById(obj).value = '';
+		document.getElementById('totalLandSurveywise' + colTot).value = '';
+		return false;
+	}
+	else {
+			document.getElementById('totalLandSurveywise' + colTot).value = acres.toFixed(4);
+	}
+	document.getElementById('editFlag').value = '1';
+}
+
+function saleDeedDetails(param) {
+	
+	var sroCode = $("#srcode").val();
+	var docNo = $("#doctNo").val();
+	var regYear = $("#ryear").val();
+	var error = '';
+	chakriAdd();
+	var resp = $.ajax({
+   		url: 'getSaleDeedCopy',
+ 	   	type: "POST",
+ 		async:false,
+ 	 	data: {sroCode : sroCode, docNo : docNo, regYear : regYear},
+	 	success: function(data){
+	 		
+	 		var pdf = 'data:application/octet-stream;base64,' + data;
+	 		if(param == 'saleDownload') {
+	 			var dlnk = document.getElementById('dwnldLnk');
+		 	   	dlnk.href = pdf;
+		 	   	dlnk.click();
+	 		}
+	 		else if(param == 'saleData'){
+	 			chakriRemove();
+	 			//document.getElementById('saleObjectPdfId').setAttribute('data', pdf);
+	 			//return data;
+	 		}
+	 		
+	 		chakriRemove();
+	 	},
+ 		error: function(jqxhr) {
+    	console.log(jqxhr.responseText);
+    	error = 'error';
+    	if(param == 'saleDownload') {
+    		alert("No registered sale deed found.");
+    	}
+    	chakriRemove();
+  }
+});
+	
+	var pdfData = '';
+	if(param == 'saleData') {
+		if(error == '')
+			pdfData = resp.responseText;
+		else 
+			pdfData = 'error';
+		return pdfData;
+	}
+}
+
+
+function validateSize() {
+ 	  var max_length=30000;
+ 	  var filesize = document.getElementById("signature").files[0].size;
+ 	  var imageVal=document.getElementById("signature").value.split('.')
+ 	   var ext = imageVal[imageVal.length - 1].toLowerCase();
+	  if ((ext != 'jpg') && (ext != 'jpeg')
+			&& (ext != 'png')) {
+		alert("Please Upload jpg,jpeg,png file only.");
+		document.getElementById("signature").value = "";
+		return false;
+	}
+		  if (filesize > max_length) {
+			
+			alert("File Size Must be Less than 30 KB.");
+			
+			document.getElementById("signature").value = "";
+			
+			return false;
+		} 
+		  
+	 }
+function getVillageNew(value, value1){
+	debugger;
+	chakriAdd();
+
+	loadLocTbl('villageId', 'getVillageFromMandalNew?mandalId=' + value
+	+ '&type=13', 'mandal=' + value, value1);
+	}
+
+function getVillageAgrNew(value, value1){
+	debugger;
+	chakriAdd();
+	
+	loadLocTbl('villageId', 'getVillageFromMandalNew?mandalId=' + value
+			+ '&type=13'+'&csrf='+ cookie(), 'mandal=' + value, value1);
+}
+
+$(document).ready(function(){
+$(".datepickerFromDate").datepicker({
+	autoclose : true,
+	todayHighlight : true,
+	format: 'dd/mm/yyyy',
+    endDate: '+0d',
+    startDate: '-71y'
+});
+
+$(".datepickerToDate").datepicker({
+	autoclose : true,
+	todayHighlight : true,
+    format: 'dd/mm/yyyy',
+    endDate: '+0d'
+});
+
+$('.datepickerFromDate').on("change", function(){
+	   // when chosen from_date, the end date can be from that point forward
+	 var startVal = $('.datepickerFromDate').val();
+	 $('.datepickerToDate').data('datepicker').setStartDate(startVal);
+});
+
+$('.datepickerToDate').on("change", function(){
+	 // when chosen end_date, start can go just up until that point
+	 var endVal = $('.datepickerToDate').val();
+   $('.datepickerFromDate').data('datepicker').setEndDate(endVal );
+});
+});
+function alphabetOnly(e) 
+{   
+  var key=window.event.keyCode;
+   var allowed='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+   return allowed.indexOf(String.fromCharCode(key)) !=-1 ;
+}
+
+$(".isNumeric").keydown(function (e) {
+    if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+        (e.keyCode == 65 && ( e.ctrlKey === true || e.metaKey === true )) ||
+        (e.keyCode == 86 && ( e.ctrlKey === true || e.metaKey === true )) ||
+        (e.keyCode == 67 && ( e.ctrlKey === true || e.metaKey === true )) ||
+        (e.keyCode == 88 && ( e.ctrlKey === true || e.metaKey === true )) ||
+        (e.keyCode >= 35 && e.keyCode <= 40)) {
+             return;
+    }
+	if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+        e.preventDefault();
+    }
+});
+//----------------------------

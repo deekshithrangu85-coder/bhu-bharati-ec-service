@@ -1,0 +1,119 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Bhu Bharati EC Automation API",
+    "description": "REST API service to automate the search and download of the Encumbrance Certificate (EC) document from Bhu Bharati.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local development server"
+    }
+  ],
+  "paths": {
+    "/api/ec/download": {
+      "post": {
+        "summary": "Download Encumbrance Certificate (EC)",
+        "description": "Submits the property search parameters to the automated workflow, retrieves the generated certificate, and returns the PDF in the response stream.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "district",
+                  "mandal",
+                  "village",
+                  "surveyNo",
+                  "khataNo"
+                ],
+                "properties": {
+                  "district": {
+                    "type": "string",
+                    "description": "The target property district name",
+                    "example": "Rangareddy"
+                  },
+                  "mandal": {
+                    "type": "string",
+                    "description": "The target property mandal name",
+                    "example": "Serilingampalle"
+                  },
+                  "village": {
+                    "type": "string",
+                    "description": "The target property village name",
+                    "example": "Kancha Gachibowli"
+                  },
+                  "surveyNo": {
+                    "type": "string",
+                    "description": "The Survey Number / Sub-Division Number",
+                    "example": "12/1/a/1/2"
+                  },
+                  "khataNo": {
+                    "type": "string",
+                    "description": "The Khata Number",
+                    "example": "60001"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "EC Certificate PDF File",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Missing or invalid search parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Missing required parameter(s). Please provide district, mandal, village, surveyNo, and khataNo."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error - Automation retrieval failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Automation retrieval failed: timeout of 30000ms exceeded"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

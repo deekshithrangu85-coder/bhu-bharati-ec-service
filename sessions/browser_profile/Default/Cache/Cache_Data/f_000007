@@ -1,0 +1,742 @@
+function discoverDevice() {
+		   debugger;
+		   chakriAdd(); 
+		   var envValue=document.getElementById("Env").value;
+		   setTimeout(function(){		
+		   var deviceID =document.getElementById("bioMachineId").value;
+		   
+		     	if (deviceID == 1) {
+		     		discoverAvdmAuth();
+		     	} else if (deviceID == 2) {
+		     		captureFPAuth();
+		     	}else if(deviceID == 3) {
+		     		secugenRdServiceInfo(envValue);
+		     	}else if(deviceID == 4) {
+		     		discoverIrisAuthRDService();
+		     	}else if(deviceID == 5) {
+		     		discoverIriSheildService();
+		     	}
+		     	
+		   	},10)
+}
+
+/*var params = "";
+	function DiscoverSecugenDevice()
+	{
+		debugger;
+	var	uri 	= "https://localhost:11100/";
+		var	xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange=function()
+		{
+			if (xmlhttp.readyState==4 && xmlhttp.status==200)
+ var $doc = $.parseXML(xmlhttp.responseText);
+  var CmbData1 = $($doc).find('RDService').attr('status');
+if (CmbData1 == 'READY') {
+finalUrl = uri;
+DriverInfo();
+Capture();
+}else if (CmbData1 =='NOTREADY'){
+	alert("Biometric Device not connected.");
+	chakriRemove();
+}
+else if ( xmlhttp.status == 404 )
+{
+//alert(xmlhttp.status);
+failCall(xmlhttp.status)
+			}
+			else if ( xmlhttp.status == 503 )
+			{
+				//alert(xmlhttp.status);
+				failCall(xmlhttp.status)
+			}
+		};
+		xmlhttp.onerror=function()
+		{
+			//alert(xmlhttp.status);
+			failCall(xmlhttp.status);
+		}
+		xmlhttp.onabort=function()
+		{
+			alert("Aborted");
+			chakriRemove();
+		}
+		xmlhttp.open("RDSERVICE", uri, true );
+		xmlhttp.send();
+	} 
+	function Capture() 
+       	{
+		debugger;
+		 var envValue=document.getElementById("Env").value; 
+		 //alert(envValue);
+		var	uri 	= "https://localhost:11100/rd/capture";
+		// params  += "&PidXML=" + encodeURIComponent(enc_pid_b64);
+		params = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><PidOptions ver="1.0"><Opts fCount="1" fType="0" iCount="0" iType="" pCount="0" pType="" format="0" pidVer="2.0" timeout="10000" otp="" env="'+envValue+'" wadh="" posh="UNKNOWN"/><CustOpts><Param name="ValidationKey" value=""/></CustOpts></PidOptions>';
+		// params = '<PidOptions ver="1.0"> <Opts fCount="1"  format="0" pidVer="2.0" timeout="20000" env="P" posh="LEFT_INDEX" />';
+		 // params += '</PidOptions>';
+		var	xmlhttp = new XMLHttpRequest();
+
+		xmlhttp.onreadystatechange=function()
+
+		{
+			if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		   {
+				var $doc = $.parseXML(xmlhttp.responseText);
+    			var Message =  $($doc).find('Resp').attr('errInfo');
+    			var errorCode =  $($doc).find('Resp').attr('errCode');
+            	if(errorCode == '0')
+            		{
+				document.getElementById("txtPidData").value = String(xmlhttp.responseText);
+                verify();
+            		}else if(errorCode == '700'){
+            	alert("Biometric Capture Failed / TimeOut.");
+            	chakriRemove();
+            		}
+            		else{
+                		alert(Message);
+                		chakriRemove();
+                	}
+			}
+			else if ( xmlhttp.status == 404 )
+			{
+				failCall(xmlhttp.status)
+			}
+			else if ( xmlhttp.status == 503 )
+			{
+				alert("server Unavailable.");
+				chakriRemove();
+			}
+		};
+		xmlhttp.onerror=function()
+		{
+			failCall(xmlhttp.status);
+		}
+		xmlhttp.onabort=function()
+		{
+			alert("Aborted.");
+			chakriRemove();
+		}
+		xmlhttp.open("CAPTURE", uri, true );
+		xmlhttp.send(params);
+
+	}
+	function DriverInfo() 
+       	{
+		debugger;
+		var	uri 	= "https://localhost:11100/rd/info";
+		var	xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange=function()
+		{
+			if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		        {
+				RTASucessInfo(xmlhttp.responseXML);
+			}
+			else if ( xmlhttp.status == 404 )
+			{
+				failCall(xmlhttp.status)
+
+			}
+			else if ( xmlhttp.status == 503 )
+			{
+				failCall(xmlhttp.status)
+
+			}
+		};
+		xmlhttp.onerror=function()
+		{
+			failCall(xmlhttp.status);
+		}
+		xmlhttp.onabort=function()
+		{
+			alert("Aborted.");
+			chakriRemove();
+		}
+		xmlhttp.open("DEVICEINFO", uri, true );
+		xmlhttp.send();
+	}
+	function failCall (status)
+	{
+		alert("Check if RDSERVICE is running.");
+		chakriRemove();
+
+	}
+	function RTASucessInfo(result) {
+        debugger;
+		var x = result.getElementsByTagName("Param")[0];
+        var y = x.getAttribute("value");
+
+        var xmlhttpcap = new XMLHttpRequest();
+        xmlhttpcap.open('POST', 'https://etranwallet.com/Biocheck/BioCheckService.asmx?op=init', true);
+
+        var sr = '<?xml version="1.0" encoding="utf-8"?>' +
+            '<soap:Envelope ' +
+            'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
+            'xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' +
+            'xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
+            '<soap:Body>' +
+            '<init xmlns="http://tempuri.org/">' +
+            '<serialnumber>' + y + '</serialnumber>' +
+            '</init>' +
+            '</soap:Body>' +
+            '</soap:Envelope>';
+
+        xmlhttpcap.onreadystatechange = function () {
+            if (xmlhttpcap.readyState == 4) {
+                if (xmlhttpcap.status == 200) {
+                    var a = xmlhttpcap.responseXML;
+
+                    var b = a.getElementsByTagName("initResult");
+
+                    var c = b[0].textContent;
+debugger;
+                    if (c != 1) {
+                    	alert("Device Not Registered !");
+                    	chakriRemove();
+                    }
+                }
+            }
+        }
+
+        // Send the POST request
+        xmlhttpcap.setRequestHeader('Content-Type', 'text/xml');
+        xmlhttpcap.send(sr);
+
+
+    }*/
+   
+   
+	var params = "";
+	function secugenRdServiceInfo(envValue) {
+	// var uri = "http://127.0.0.1:11100";
+	var	uri = "https://localhost:11100/";
+	var xmlhttp = new XMLHttpRequest();
+	/*
+	  xmlhttp.onreadystatechange = function() {
+	 * 
+	 * if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+	 *  } else if (xmlhttp.status == 404) { failCall(xmlhttp.status) } else if
+	 * (xmlhttp.status == 503) { failCall(xmlhttp.status) } } xmlhttp.onerror =
+	 * function() { failCall(xmlhttp.status); } xmlhttp.onabort = function() {
+	 * alert("Aborted"); }
+	 */
+
+	xmlhttp.onreadystatechange = function() {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+			var $doc = $.parseXML(xmlhttp.responseText);
+		var CmbData1 = $($doc).find('RDService').attr('status');
+		if (CmbData1 == 'READY') {
+			CaptureSecugen(envValue);
+		} else if (CmbData1 == 'NOTREADY') {
+			alert("Biometric Device not connected.");
+			chakriRemove();
+		} else if (xmlhttp.status == 404) {
+			// alert(xmlhttp.status);
+			failCall(xmlhttp.status)
+		} else if (xmlhttp.status == 503) {
+			// alert(xmlhttp.status);
+			failCall(xmlhttp.status)
+		}
+	};
+	xmlhttp.onerror = function() {
+		// alert(xmlhttp.status);
+		failCall(xmlhttp.status);
+	}
+	xmlhttp.onabort = function() {
+		alert("Aborted");
+		chakriRemove();
+	}
+	xmlhttp.open("RDSERVICE", uri, true);
+	xmlhttp.send();
+	}
+	
+	function CaptureSecugen(envValue) {
+	debugger;
+	var	uri = "https://localhost:11100/rd/capture";
+
+	/*params = '<?xml version="1.0"?> <PidOptions ver="1.0"> <Opts fCount="1" fType="0" iCount="0" pCount="0" format="0" pidVer="2.0" timeout="10000" wadh="" posh="UNKNOWN" env="'
+			+ envValue + '" /> ' + '' + ' </PidOptions>';*/
+	 var fCountList = "1"; //document.getElementById("drpfCount");
+     var fTypeList = "2"; //document.getElementById("drpfType");
+     var formatList = "0"; //document.getElementById("drpformat");
+     var otpString = ""; //document.getElementById("txtOtp").value;
+     var wadhStr = ""; //document.getElementById("txtWadh").value;
+     var demoStrTmp = ""; //document.getElementById("txtDemo").value;
+     var validationKey = "";
+	params = "<?xml version=\"1.0\"?> <PidOptions ver=\"1.0\"> <Opts fCount=\"" + fCountList + "\" fType=\"" + fTypeList + "\" iCount=\"0\" pCount=\"0\" format=\"" + formatList + "\" pidVer=\"2.0\" timeout=\"20000\" otp=\"" + otpString + "\" posh=\"UNKNOWN\" env=\""+envValue+"\" wadh=\"\" /> </PidOptions>";
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function() {
+		debugger;
+		
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			var $doc = $.parseXML(xmlhttp.responseText);
+			var Message = $($doc).find('Resp').attr('errInfo');
+			var errorCode = $($doc).find('Resp').attr('errCode');
+			if (errorCode == '0') {
+				document.getElementById("txtPidData").value = String(xmlhttp.responseText);
+				verify();
+			} else if (errorCode == '700') {
+				alert("Biometric Capture Failed / TimeOut.");
+				chakriRemove();
+			} else {
+				alert(Message);
+				chakriRemove();
+			}
+			// document.getElementById("txtPidData").value = xmlhttp.responseText;
+			// validateekyc('udc');
+		} else if (xmlhttp.status == 404) {
+			failCall(xmlhttp.status)
+		} else if (xmlhttp.status == 503) {
+			alert("server Unavailable");
+		}
+	}
+	xmlhttp.onerror = function() {
+		failCall(xmlhttp.status);
+	}
+	xmlhttp.onabort = function() {
+		alert("Aborted");
+	}
+	xmlhttp.open("CAPTURE", uri, true);
+	// xmlhttp.send(encodeURIComponent(params));
+	xmlhttp.send(params);
+}
+	function DriverInfo() {
+		var uri = "http://localhost:11100/rd/info";
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function() {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				SucessInfo(xmlhttp.responseText);
+			} else if (xmlhttp.status == 404) {
+				failCall(xmlhttp.status)
+			} else if (xmlhttp.status == 503) {
+				failCall(xmlhttp.status)
+			}
+		}
+		xmlhttp.onerror = function() {
+			failCall(xmlhttp.status);
+		}
+		xmlhttp.onabort = function() {
+			alert("Aborted");
+		}
+		xmlhttp.open("DEVICEINFO", uri, true);
+		xmlhttp.send();
+	}
+	function SucessInfo(result) {
+		document.getElementById("resultTextArea").value = result;
+	}
+
+	function failCall(status) {
+
+		/* 	
+			If you reach here, user is probabaly not running the 
+			service. Redirect the user to a page where he can download the
+			executable and install it. 
+		 */
+		alert("Check if RDSERVICE is running ");
+
+	}
+	
+	
+
+	function validateIrisEkyc() {
+		debugger;
+		var gtid=$("#getid").val();
+		var selectedId = $('#selectedId').val();
+		var gtptype=$("#getptype").val();
+		var check = "0";
+		var aadharId = document.getElementById("aadhar").value;
+		var finger = document.getElementById("ddlfinger").value;
+		var params = "&encdata=" + encodeURIComponent($("#getrdresponse").val())
+				+ "&aadharId=" + enc(aadharId) + "&finger=" + finger +"&ptype=" + gtptype + "&pid=" + gtid + "&regId=" + selectedId;
+		var flag = 1;
+		var csrf=cookie();
+		/* var url = "validateIrisEKYC?csrf="+csrf; */
+		var url = "validateIrisEKYCRegNew?csrf="+csrf;
+		$.ajax({
+		type : "POST",
+	    url: url,
+	    contentType: "application/x-www-form-urlencoded; charset=utf-8;",
+	    data:params,
+	    async: false,
+	    crossDomain: true,
+	    headers:{'X-Requested-With':'XMLHttpRequest'},
+	    success: function (data) {
+	    	debugger;
+	    	//alert("xml.responseText: " + data);
+			var check= data;
+			if(check==null|| check==''){
+				alert("Credentials mismatch");
+				document.getElementById("aadhar").value = "";
+				document.getElementById("ddlfinger").value = '1';
+				document.getElementById("ddldevice").value = '1';
+				$('#myModal').modal('toggle');
+			}else if(check=='3' || check=='3\r\n'){
+				alert("Biometric Capture Failed 2");
+				document.getElementById("aadhar").value = "";
+				document.getElementById("ddlfinger").value = '1';
+				document.getElementById("ddldevice").value = '1';
+				$('#myModal').modal('toggle');
+			}else{
+			var res = check.split("$");
+			//var abc = JSON.parse(xml.responseText)
+			//var res = abc.photo;
+			
+			$('#'+gtptype+'_'+gtid).html('<img src=data:image/png;base64,'+res[16]+' /> ');
+			
+			$("#"+gtid).hide();
+			 //alert(res[0]);
+			 $('#aadhar').val('');
+			document.getElementById("aadhar").value = "";
+			}
+	    },
+	    error: function (jqXHR, ajaxOptions, thrownError) {
+	    }
+	});
+	}
+
+	var Base64={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",encode:function(e){var t="";var n,r,i,s,o,u,a;var f=0;e=Base64._utf8_encode(e);while(f<e.length){n=e.charCodeAt(f++);r=e.charCodeAt(f++);i=e.charCodeAt(f++);s=n>>2;o=(n&3)<<4|r>>4;u=(r&15)<<2|i>>6;a=i&63;if(isNaN(r)){u=a=64}else if(isNaN(i)){a=64}t=t+this._keyStr.charAt(s)+this._keyStr.charAt(o)+this._keyStr.charAt(u)+this._keyStr.charAt(a)}return t},decode:function(e){var t="";var n,r,i;var s,o,u,a;var f=0;e=e.replace(/[^A-Za-z0-9\+\/\=]/g,"");while(f<e.length){s=this._keyStr.indexOf(e.charAt(f++));o=this._keyStr.indexOf(e.charAt(f++));u=this._keyStr.indexOf(e.charAt(f++));a=this._keyStr.indexOf(e.charAt(f++));n=s<<2|o>>4;r=(o&15)<<4|u>>2;i=(u&3)<<6|a;t=t+String.fromCharCode(n);if(u!=64){t=t+String.fromCharCode(r)}if(a!=64){t=t+String.fromCharCode(i)}}t=Base64._utf8_decode(t);return t},_utf8_encode:function(e){e=e.replace(/\r\n/g,"\n");var t="";for(var n=0;n<e.length;n++){var r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r)}else if(r>127&&r<2048){t+=String.fromCharCode(r>>6|192);t+=String.fromCharCode(r&63|128)}else{t+=String.fromCharCode(r>>12|224);t+=String.fromCharCode(r>>6&63|128);t+=String.fromCharCode(r&63|128)}}return t},_utf8_decode:function(e){var t="";var n=0;var r=c1=c2=0;while(n<e.length){r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r);n++}else if(r>191&&r<224){c2=e.charCodeAt(n+1);t+=String.fromCharCode((r&31)<<6|c2&63);n+=2}else{c2=e.charCodeAt(n+1);c3=e.charCodeAt(n+2);t+=String.fromCharCode((r&15)<<12|(c2&63)<<6|c3&63);n+=3}}return t}};
+
+		uri = "http://127.0.0.1";
+		//port="11141";
+		port="";
+		start_port_http = 11100;	
+		start_port_https = 11100;
+		start_port = start_port_http;
+		number_of_port = 20;
+		end_port = start_port + number_of_port;
+		var env = ''
+		
+		var numberOfCheckedPort = 0;
+		var hasRDServiceExt = false;
+		
+		function getUrl(p)
+		{
+			  uri = p+"://127.0.0.1";
+			  if (p == "https") {
+				start_port = start_port_https;
+			  } else {
+				start_port = start_port_http;
+			  }
+			  end_port = start_port + number_of_port;
+		}
+		
+		function getPort(pt)
+		{
+			  port = pt;
+		}
+		
+		var parseXml = getParseXmlFunc();
+		
+		function getParseXmlFunc() {
+			var parseXml;
+			if (typeof window.DOMParser != "undefined") {
+				parseXml = function(xmlStr) {
+					return ( new window.DOMParser() ).parseFromString(xmlStr, "application/xml");
+				};
+			} else if (typeof window.ActiveXObject != "undefined" &&
+				   new window.ActiveXObject("Microsoft.XMLDOM")) {
+				parseXml = function(xmlStr) {
+					var xmlDoc = new window.ActiveXObject("Microsoft.XMLDOM");
+					xmlDoc.async = "false";
+					xmlDoc.loadXML(xmlStr);
+					return xmlDoc;
+				};
+			} else {
+				throw new Error("No XML parser found");
+			}
+			
+			return parseXml;
+		}
+		
+		function getXMLHttpRequest(verb, url, asynchronous) {
+			try {
+				var xhr = new XMLHttpRequest();
+			
+				if ("withCredentials" in xhr){
+					xhr.open(verb, url, asynchronous);
+			
+				} else if (typeof XDomainRequest != "undefined"){
+					xhr = new XDomainRequest();
+					xhr.open(verb, url);
+				} else {
+					xhr = null;
+				}
+			} catch (ex) {
+				alert("Error: " + ex.message);
+			}
+			return xhr;
+		}
+			
+		function openModal() {
+	        document.getElementById('modal').style.display = 'block';
+	        document.getElementById('fade').style.display = 'block';
+	    }
+
+	    function closeModal() {
+	        document.getElementById('modal').style.display = 'none';
+	        document.getElementById('fade').style.display = 'none';
+	    }
+
+		function captureIriShield(){
+			debugger;
+			clearResponseTextArea();
+			openModal();
+			var url = uri+":"+port+"/rd/capture";
+			/* env = $("#envselect").val(); */
+			var env='<%=envNew%>';
+			
+			var PIDOPTS="<PidOptions ver='1.0'><Opts fCount='' fType='' iCount='1' iType='0' pCount='' pType='' format='0' pidVer='2.0' timeout='10000' otp='' wadh='T9nIfCslZnsX4pR6o1CzBDHp7MUiYne6QySOZvmB3Rk=' posh='UNKNOWN' env='"
+			+ env + "'/><CustOpts> <Param name='enable_preview' value='yes' /></CustOpts></PidOptions>";
+			console.log(PIDOPTS);
+		 
+			var xhr = getXMLHttpRequest('CAPTURE', url, true);
+						  
+			xhr.onreadystatechange = function () {	
+				if (xhr.readyState == 4){
+					var status = xhr.status;
+					if (status == 200) {
+						
+						var data=xhr.responseText
+						$('#txtpidata').val(data);
+						$('#getrdresponse').val(data);
+						// alert(RDurl);
+						var oParser = new DOMParser();
+						var oDOM = oParser.parseFromString(data, "application/xml");
+						console.log(oDOM.documentElement.nodeName == "parsererror" ? "error while parsing" : 		oDOM.documentElement.nodeName);
+						
+						var resp = oDOM.getElementsByTagName("Resp")[0];
+						var errcode = resp.getAttribute('errCode');
+						var errInfo = resp.getAttribute('errInfo');
+						if (errcode == '0') {
+							//alert("Iris captured");
+							verify();
+						} else {
+							alert("Capture error: " + errInfo);
+						}
+						
+					} else {
+						alert("Service Unavailable");
+						console.log(xhr.response);
+
+					}
+					
+					closeModal();
+				}
+
+			};
+			
+			xhr.send(PIDOPTS);
+		}
+		  
+		function GetInfo(){
+			clearResponseTextArea();
+			
+			openModal();
+		
+			var url = uri+":"+port+"/rd/info";	
+			 
+			var xhr = getXMLHttpRequest('DEVICEINFO', url, true);
+							
+			xhr.onreadystatechange = function () {
+			
+				if (xhr.readyState == 4){
+					var status = xhr.status;
+				
+					if (status == 200) {
+						var data = xhr.responseText
+						$('#txtpidata').val(data);
+						
+						console.log(data);
+						console.log('parsing...');
+						var oParser = new DOMParser();
+						var oDOM = oParser.parseFromString(data, "application/xml");
+						console.log(oDOM.documentElement.nodeName == "parsererror" ? "error while parsing" : 		oDOM.documentElement.nodeName);
+						
+						var dc = oDOM.documentElement.getAttribute('dc');
+						
+						var x = oDOM.getElementsByTagName('Param');
+						var serial = '';
+						for (i = 0; i < x.length; i++) {
+							if (x[i].getAttribute('name') == 'serialNumber') {
+								serial = x[i].getAttribute('value')
+							}						
+						}
+						
+						$('#divSerial').html(serial);
+						$('#divDc').html(dc);
+						
+					} else {
+						alert("Service Unavailable");
+						console.log(xhr.response);				
+					}
+					
+					closeModal();
+				}		
+			};
+			
+			xhr.send();
+		}
+		  
+		function clearResponseTextArea() {
+			 $('#txtpidata').val('');
+			 $('#getrdresponse').html('');
+		}	
+		  
+		function discoverIriSheildService(){
+		  debugger;
+			numberOfCheckedPort = 0;
+			hasRDServiceExt = false;
+		  
+			clearResponseTextArea();
+					
+			openModal();
+			
+			setTimeout(function() {
+				
+				var url = uri + ":" + port + "/";
+				try {
+					for(tmpPort = start_port; tmpPort <= end_port; tmpPort++) {
+						try {
+							url = uri + ":" + tmpPort + "/";
+							let xhr = getXMLHttpRequest('RDSERVICE', url, true);
+							
+							xhr.onreadystatechange = (function (tXhr, tPort) {
+								return function() {
+									if (tXhr.readyState == 4){
+										var status = tXhr.status;
+								
+										if (status == 200) {
+											var data = tXhr.responseText;
+									
+											console.log("Request success, port = " + tPort);
+											console.log(data);
+											var oDOM = parseXml(data);
+											//document.getElementById("getrdresponse").innerHTML = data;
+											//document.getElementById("getrdresponse").value = data;
+											console.log("IRISHIELD DATA-->"+data);
+											console.log("IRISHIELD getrdresponse-->"+document.getElementById("getrdresponse").value);
+											$('#getrdurl').val(url);
+											console.log(oDOM.documentElement.nodeName == "parsererror" ? "error while parsing" : 		oDOM.documentElement.nodeName);
+											
+											var info = oDOM.documentElement.getAttribute('info');
+											if (info != null && info.indexOf('IriShield-USB-MK2120UL') != -1 && info.indexOf('Registered Device Service Ext') != -1) {
+												port = tPort;
+												document.getElementById("port").value = port;
+												$('#txtpidata').val(data);	
+												document.getElementById("getrdresponse").value = data;
+												hasRDServiceExt = true;
+												captureIriShield();
+												console.log("Port " + port + " IriShield-USB-MK2120UL Registered Device Service Ext");	
+											}
+											
+										}
+										
+										numberOfCheckedPort++;
+										if (numberOfCheckedPort == number_of_port) {
+											closeModal();
+											
+											if (!hasRDServiceExt) {
+												alert("Service Unavailable");
+											}
+										}
+										
+									}
+								}
+							})(xhr, tmpPort);
+							
+							xhr.onerror = function() {
+								
+							};
+			
+							xhr.send();
+													
+						} catch (e) {
+							console.log(e.message);		
+						}		
+					}
+					
+				} finally {
+					
+				}
+			}, 0);
+		  }
+
+		function GetRdServiceInfo(){
+
+			clearResponseTextArea();
+
+			openModal();
+
+			var url = uri+":"+port+"/rdservice";	
+			 
+			var xhr = getXMLHttpRequest('GET', url, true);
+							
+			xhr.onreadystatechange = function () {
+
+				if (xhr.readyState == 4){
+					var status = xhr.status;
+				
+					if (status == 200) {
+						var data = xhr.responseText
+						$('#txtpidata').val(data);					
+										
+					} else {
+						alert("Service Unavailable");
+						console.log(xhr.response);				
+					}
+					
+					closeModal();
+				}		
+			};
+
+			xhr.send();
+		}		
+
+		function SelectElement(id, valueToSelect)
+		{    
+			var element = document.getElementById(id);
+			element.value = valueToSelect;
+		}
+
+		$(window).load(function () {
+			var userAgent = navigator.userAgent.toLowerCase(); 
+	        var Android = userAgent.indexOf("android") > -1; 
+		
+			console.log('window.load');	
+			if (Android) {
+				console.log('Android');	
+				document.getElementById("rd_service_ext_container").style.display = "none";	
+				document.getElementById("guide_container").style.display = "none";
+				document.getElementById("requirement_win_container").style.display = "none";
+				document.getElementById("requirement_android_container").style.display = "block";	
+				document.getElementById("btnInfo").style.display = "none";			
+			}
+		
+			if (location.protocol == 'https:')
+			{
+			//	SelectElement("protocol", 'https');
+				getUrl('https');
+				//document.getElementById("protocol").disabled = true;
+			} else if (location.protocol == 'http:') {
+				//SelectElement("protocol", 'http');
+				getUrl('http');
+				//document.getElementById("protocol").disabled = true;
+			} else {
+				//document.getElementById("protocol").disabled = false;
+			}		
+		});
+
+
+		function testXMLConfig(){
+			  	var url = uri+":"+port+"/rd/regdevicemodel";
+			  	var devicemodel = "IriSentinel";
+
+			  	var xhr = getXMLHttpRequest('POST', url, true);
+							  
+				xhr.onreadystatechange = function () {
+				}
+				xhr.send(devicemodel);
+
+			  }
+		
+	
+	
+	
