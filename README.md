@@ -1,76 +1,91 @@
-# Bhu Bharati EC Automation API
+<div align="center">
 
-A high-performance REST API that automates the retrieval and download of **Encumbrance Certificate (EC)** documents from the **Bhu Bharati Telangana Portal**.
+# 🚀 Bhu Bharati EC Automation API
 
-This project leverages **Node.js**, **Express.js**, and **Playwright's APIRequestContext** to interact directly with the portal's backend APIs, eliminating the need for browser-based UI automation after authentication.
+### ⚡ High-Performance REST API for Automated Encumbrance Certificate (EC) Retrieval
 
----
+![Node.js](https://img.shields.io/badge/Node.js-22.x-green?style=for-the-badge&logo=node.js)
+![Express](https://img.shields.io/badge/Express.js-5.x-black?style=for-the-badge&logo=express)
+![Playwright](https://img.shields.io/badge/Playwright-Automation-green?style=for-the-badge&logo=playwright)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow?style=for-the-badge&logo=javascript)
 
-## Features
-
-- API-level automation using Playwright
-- Session persistence using saved authentication state
-- Automatic CSRF token handling
-- Dynamic District, Mandal, Village, Survey, and Khata resolution
-- Direct EC PDF generation and download
-- RESTful API endpoint
-- Temporary file cleanup after download
-- Mock mode for local development
-- Production mode for live Bhu Bharati portal
-- Robust error handling and logging
+</div>
 
 ---
 
-## Tech Stack
+## 📖 Overview
 
-| Technology | Purpose |
-|------------|---------|
-| Node.js | Backend Runtime |
-| Express.js | REST API Framework |
-| Playwright | API-level Automation |
-| Chromium | Secure Network Context |
-| dotenv | Environment Configuration |
-| UUID | Unique File Naming |
-| CORS | Cross-Origin Resource Sharing |
+**Bhu Bharati EC Automation API** is a RESTful backend application that automates the retrieval and download of **Encumbrance Certificate (EC)** documents from the **Bhu Bharati Telangana Portal**.
+
+Unlike traditional browser automation, this project communicates directly with the portal's backend APIs using **Playwright's APIRequestContext**, resulting in significantly faster execution and reduced browser interaction after authentication.
 
 ---
 
-## Project Architecture
+# ✨ Features
 
+- 🚀 API-Level Automation
+- 🔐 Persistent Session Management
+- 🔄 Automatic CSRF Token Synchronization
+- 📍 Dynamic District, Mandal & Village Resolution
+- 📄 Automatic EC PDF Download
+- ⚡ High-Speed HTTP Requests
+- 🛡️ Robust Error Handling
+- 🧹 Automatic Temporary File Cleanup
+- 🌐 Mock Mode for Local Development
+- ☁️ Production Mode Support
+
+---
+
+# 🛠 Tech Stack
+
+| Technology | Description |
+|------------|-------------|
+| 🟢 Node.js | Backend Runtime |
+| ⚡ Express.js | REST API Framework |
+| 🎭 Playwright | API-Level Automation |
+| 🌍 Chromium | Secure Browser Network Context |
+| 🔐 dotenv | Environment Configuration |
+| 📦 UUID | Unique File Naming |
+| 🌐 CORS | Cross-Origin Resource Sharing |
+
+---
+
+# 🏗 System Architecture
+
+```text
+                Client
+         (Postman / Frontend)
+                 │
+                 ▼
+      POST /api/ec/download
+                 │
+                 ▼
+          Express Router
+                 │
+                 ▼
+          EC Controller
+                 │
+                 ▼
+      API Scraper Service
+                 │
+                 ▼
+     Bhu Bharati Portal APIs
+                 │
+                 ▼
+     Generate EC Certificate
+                 │
+                 ▼
+        Download PDF File
+                 │
+                 ▼
+      Stream PDF to Client
 ```
-                    Client
-            (Postman / Frontend)
-                     │
-                     ▼
-          POST /api/ec/download
-                     │
-                     ▼
-             Express Router
-                     │
-                     ▼
-             EC Controller
-                     │
-                     ▼
-         API Scraper Service
-                     │
-                     ▼
-        Bhu Bharati Portal APIs
-                     │
-                     ▼
-         Generate EC Certificate
-                     │
-                     ▼
-            Download PDF File
-                     │
-                     ▼
-         Stream PDF to Client
-```
 
 ---
 
-## Project Structure
+# 📁 Project Structure
 
-```
+```text
 bhu-bharati-ec-service/
 │
 ├── controllers/
@@ -84,75 +99,31 @@ bhu-bharati-ec-service/
 │   └── playwrightService.js
 │
 ├── sessions/
-│   └── state.json
 │
 ├── downloads/
 │
 ├── server.js
 ├── package.json
-├── openapi.json
-└── README.md
+├── swagger.json
+├── README.md
+└── .env
 ```
 
 ---
 
-## Workflow
+# ⚙️ Installation
 
-```
-Load Saved Session
-        │
-        ▼
-Read Authentication Cookies
-        │
-        ▼
-Extract CSRF Token
-        │
-        ▼
-Resolve District ID
-        │
-        ▼
-Resolve Mandal ID
-        │
-        ▼
-Resolve Village ID
-        │
-        ▼
-Resolve Survey ID
-        │
-        ▼
-Resolve Khata ID
-        │
-        ▼
-Generate EC Certificate
-        │
-        ▼
-Download PDF
-        │
-        ▼
-Save Temporarily
-        │
-        ▼
-Return PDF Response
-        │
-        ▼
-Delete Temporary File
-```
-
----
-
-# Installation
-
-## Clone Repository
+## 1️⃣ Clone Repository
 
 ```bash
-git clone https://github.com/your-username/bhu-bharati-ec-service.git
+git clone https://github.com/deekshithrangu85-coder/bhu-bharati-ec-service.git
 
 cd bhu-bharati-ec-service
 ```
 
 ---
 
-## Install Dependencies
+## 2️⃣ Install Dependencies
 
 ```bash
 npm install
@@ -160,9 +131,9 @@ npm install
 
 ---
 
-## Environment Variables
+## 3️⃣ Configure Environment Variables
 
-Create a `.env` file in the project root.
+Create a **.env** file
 
 ```env
 PORT=3000
@@ -174,15 +145,15 @@ TARGET_URL=https://bhubharati.telangana.gov.in
 
 ---
 
-## Run Application
+## 4️⃣ Start Server
 
-Development
+### Development
 
 ```bash
 npm run dev
 ```
 
-Production
+### Production
 
 ```bash
 npm start
@@ -190,43 +161,45 @@ npm start
 
 ---
 
-# API Documentation
+# 📡 API Endpoint
 
-## Download EC
+## Download Encumbrance Certificate
 
-**POST**
+### POST
 
 ```
 /api/ec/download
 ```
 
-### Request Body
+---
+
+## 📥 Request Body
 
 ```json
 {
-    "district":"Rangareddy",
-    "mandal":"Serilingampalle",
-    "village":"Kancha Gachibowli",
-    "surveyNo":"12/1/A/1/2",
-    "khataNo":"60001"
+  "district": "Rangareddy",
+  "mandal": "Serilingampalle",
+  "village": "Kancha Gachibowli",
+  "surveyNo": "12/1/A/1/2",
+  "khataNo": "60001"
 }
 ```
 
 ---
 
-### Success Response
-
-Returns
+## 📤 Success Response
 
 ```
-application/pdf
+HTTP/1.1 200 OK
+
+Content-Type: application/pdf
 ```
 
-The downloaded Encumbrance Certificate.
+Returns the downloaded EC Certificate PDF.
 
 ---
 
-### Error Response
+## ❌ Error Response
 
 ```json
 {
@@ -237,118 +210,134 @@ The downloaded Encumbrance Certificate.
 
 ---
 
-# How It Works
+# 🔄 Workflow
 
-Instead of automating browser clicks, this project communicates directly with the internal APIs used by the Bhu Bharati portal.
-
-The service:
-
-- Loads a previously authenticated session.
-- Reads cookies and CSRF tokens.
-- Resolves District IDs.
-- Resolves Mandal IDs.
-- Resolves Village IDs.
-- Resolves Survey IDs.
-- Resolves Khata IDs.
-- Generates the EC document.
-- Downloads the generated PDF.
-- Streams the file to the client.
-- Removes temporary files automatically.
-
-This approach significantly improves speed and reliability compared to browser-based automation.
+```text
+Saved Session
+      │
+      ▼
+Read Cookies
+      │
+      ▼
+Read CSRF Token
+      │
+      ▼
+District Lookup
+      │
+      ▼
+Mandal Lookup
+      │
+      ▼
+Village Lookup
+      │
+      ▼
+Survey Lookup
+      │
+      ▼
+Khata Lookup
+      │
+      ▼
+Generate EC
+      │
+      ▼
+Download PDF
+      │
+      ▼
+Return Response
+```
 
 ---
 
-# Session Management
+# ⚡ Performance
 
-Authentication is maintained using Playwright's saved storage state.
+✅ API-Level Communication
 
-```
-sessions/
-    state.json
-```
+✅ No Browser UI Interaction After Login
 
-The application reuses this session to avoid repeated logins.
+✅ Dynamic CSRF Token Rotation
+
+✅ Session Persistence
+
+✅ Fast PDF Retrieval
+
+✅ Automatic Cleanup
 
 ---
 
-# Error Handling
+# 🛡 Error Handling
 
 The application handles:
 
-- Missing request parameters
-- Invalid District names
-- Invalid Mandal names
-- Invalid Village names
-- Invalid Survey numbers
-- Invalid Khata numbers
-- Session expiration
-- CSRF token changes
-- Network failures
-- PDF download failures
-- Temporary file cleanup
+- ✅ Missing Request Parameters
+- ✅ Invalid District
+- ✅ Invalid Mandal
+- ✅ Invalid Village
+- ✅ Invalid Survey Number
+- ✅ Invalid Khata Number
+- ✅ Session Expiration
+- ✅ CSRF Token Changes
+- ✅ Network Errors
+- ✅ PDF Download Failures
 
 ---
 
-# Example Request
+# 🧪 Example cURL Request
 
 ```bash
 curl -X POST http://localhost:3000/api/ec/download \
 -H "Content-Type: application/json" \
 -d '{
-"district":"Rangareddy",
-"mandal":"Serilingampalle",
-"village":"Kancha Gachibowli",
-"surveyNo":"12/1/A/1/2",
-"khataNo":"60001"
+  "district":"Rangareddy",
+  "mandal":"Serilingampalle",
+  "village":"Kancha Gachibowli",
+  "surveyNo":"12/1/A/1/2",
+  "khataNo":"60001"
 }'
 ```
 
 ---
 
-# Performance Highlights
+# 🚀 Future Enhancements
 
-- No browser UI interaction after authentication
-- API-level communication
-- Fast response time
-- Lightweight execution
-- Automatic cleanup
-- Minimal memory usage
-- Reusable authenticated sessions
-
----
-
-# Future Improvements
-
-- Docker support
-- Swagger UI integration
-- JWT authentication
-- Redis session storage
-- Batch EC downloads
-- Retry mechanism
-- Logging with Winston
-- Rate limiting
-- Unit and Integration tests
-- CI/CD pipeline with GitHub Actions
+- 🐳 Docker Support
+- 📘 Swagger UI
+- 🔐 JWT Authentication
+- ⚡ Redis Session Cache
+- 📦 Batch EC Downloads
+- 🔁 Retry Mechanism
+- 📊 Logging with Winston
+- 🚦 Rate Limiting
+- ✅ Unit Testing
+- 🚀 GitHub Actions CI/CD
 
 ---
 
-# License
+# 📜 License
 
 This project is intended for educational and automation purposes.
 
-Ensure compliance with the terms of service of the Bhu Bharati portal before using this project in production.
+Please ensure compliance with the **Bhu Bharati Portal Terms of Service** before deploying or using this project in production.
 
 ---
 
-# Author
+# 👨‍💻 Author
 
 **Deekshith Rangu**
 
-- GitHub: gitclone https://github.com/your-username/bhu-bharati-ec-service.git
+🐙 GitHub: https://github.com/deekshithrangu85-coder
 
 ---
 
-## Star the Repository
+<div align="center">
 
-If you found this project useful, consider giving it a ⭐ on GitHub to support the project.
+## ⭐ Support
+
+If you found this project useful,
+
+### ⭐ Star this repository
+
+It helps others discover the project and supports future improvements.
+
+**Happy Coding! 🚀**
+
+</div>
