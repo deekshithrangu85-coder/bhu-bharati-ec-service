@@ -78,7 +78,7 @@ async function downloadEC(params) {
             await page.fill("#khataNo", params.khataNo);
 
             console.log("🖱️ Submitting mock form...");
-            const downloadsDir = path.join(__dirname, "../downloads");
+            const downloadsDir = path.join(__dirname, "../Download");
             if (!fs.existsSync(downloadsDir)) {
                 fs.mkdirSync(downloadsDir, { recursive: true });
             }
@@ -153,7 +153,7 @@ async function downloadEC(params) {
             // 6. Trigger Document Download Event
             console.log("⏳ Triggering download event via downloadECPDF()...");
             
-            const downloadsDir = path.join(__dirname, "../downloads");
+            const downloadsDir = path.join(__dirname, "../Download");
             if (!fs.existsSync(downloadsDir)) {
                 fs.mkdirSync(downloadsDir, { recursive: true });
             }
@@ -178,7 +178,7 @@ async function downloadEC(params) {
     } catch (err) {
         console.error("❌ Playwright service error:", err.message);
         try {
-            const downloadsDir = path.join(__dirname, "../downloads");
+            const downloadsDir = path.join(__dirname, "../Download");
             if (!fs.existsSync(downloadsDir)) {
                 fs.mkdirSync(downloadsDir, { recursive: true });
             }

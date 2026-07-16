@@ -41,13 +41,13 @@ async function downloadEC(req, res) {
                         message: "Error streaming the downloaded document."
                     });
                 }
+                // Cleanup on error (since file might be corrupted or incomplete)
+                cleanupFile(filePath);
             }
-            // 4. Cleanup temporary file
-            cleanupFile(filePath);
         });
 
     } catch (err) {
-        console.error("❌ Controller error:", err.message);
+        console.error("❌ Controller error:", err.stack);
         cleanupFile(filePath);
         
         res.status(500).json({

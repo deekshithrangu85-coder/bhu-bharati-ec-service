@@ -210,7 +210,7 @@ async function downloadEC(params) {
         const getFileUrl = `${baseUrl}/downloadMVcertificate?filePath=${encodeURIComponent(tempFilePath)}`;
         const fileRes = await request.get(getFileUrl, { headers });
         const buffer = await fileRes.body();
-        const downloadsDir = path.join(__dirname, "../downloads");
+        const downloadsDir = path.join(__dirname, "../Download");
         if (!fs.existsSync(downloadsDir)) {
             fs.mkdirSync(downloadsDir, { recursive: true });
         }
