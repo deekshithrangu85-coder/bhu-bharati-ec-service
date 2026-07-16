@@ -345,8 +345,7 @@ Ensure compliance with the terms of service of the Bhu Bharati portal before usi
 
 **Deekshith Rangu**
 
-- GitHub: https://github.com/your-username
-- LinkedIn: https://linkedin.com/in/your-profile
+- GitHub: gitclone https://github.com/your-username/bhu-bharati-ec-service.git
 
 ---
 
