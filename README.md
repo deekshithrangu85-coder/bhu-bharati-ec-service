@@ -229,6 +229,8 @@ npm start
 
 # API Documentation
 
+Interactive Swagger UI is available at: **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)** (with the server running).
+
 ## Download EC
 
 **POST**
@@ -361,7 +363,6 @@ curl -X POST http://localhost:3000/api/ec/download \
 # Future Improvements
 
 - Docker support
-- Swagger UI integration
 - JWT authentication
 - Redis session storage
 - Batch EC downloads
