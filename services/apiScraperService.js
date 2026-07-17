@@ -185,14 +185,7 @@ async function downloadEC(params) {
         const searchDetailsRes = await request.get(searchDetailsUrl, { headers });
         const searchDetailsHtml = await searchDetailsRes.text();
         
-        // Check for specific portal warning messages in response HTML
-        const tribalMatch = searchDetailsHtml.match(/Trans[a-z]+ Status Survey Number\s*:\s*([^<>\n\r\t]+)/i);
-        if (tribalMatch) {
-            throw new Error(tribalMatch[1].trim());
-        }
-        if (searchDetailsHtml.includes("Tribal Villages")) {
-            throw new Error("Survey no / Sub-division no are part of Tribal Villages");
-        }
+        // Check if there are truly no transactions done
         if (searchDetailsHtml.trim() === "1" || searchDetailsHtml.includes("no transaction done")) {
             throw new Error("There is no transaction done on the said survey no / sub-division no.");
         }

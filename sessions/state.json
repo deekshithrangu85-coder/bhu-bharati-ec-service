@@ -2,7 +2,7 @@
   "cookies": [
     {
       "name": "JSESSIONID",
-      "value": "TULgx6dM4-jMKu1VoJuac0NDYyXVZMcnNXEdbGiP.dharani-app-prod01",
+      "value": "swo2tWT7wd2cLWnoLuaM1VJzOeBSLdJoWwz7BPLh.dharani-app-prod02",
       "domain": "bhubharati.telangana.gov.in",
       "path": "/",
       "expires": -1,
@@ -12,7 +12,7 @@
     },
     {
       "name": "setAuth",
-      "value": "ac092e66-91f0-42f0-bcd9-97641f5edc24",
+      "value": "93650cd0-c50b-4614-a8fc-3e4a0cb81055",
       "domain": "bhubharati.telangana.gov.in",
       "path": "/",
       "expires": -1,

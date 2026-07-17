@@ -181,15 +181,8 @@ async function downloadEC(params) {
             await page.waitForLoadState("networkidle");
             await page.waitForTimeout(2000); // 2-second safety buffer for rendering
             
-            // Check for specific portal warning messages rendered on the page
+            // Check if there are truly no transactions done
             const pageText = await page.innerText("body");
-            const tribalMatch = pageText.match(/Trans[a-z]+ Status Survey Number\s*:\s*([^\n\r]+)/i);
-            if (tribalMatch) {
-                throw new Error(tribalMatch[1].trim());
-            }
-            if (pageText.includes("Tribal Villages")) {
-                throw new Error("Survey no / Sub-division no are part of Tribal Villages");
-            }
             if (pageText.includes("no transaction done") || pageText.includes("no transaction")) {
                 throw new Error("There is no transaction done on the said survey no / sub-division no.");
             }
