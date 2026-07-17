@@ -102,24 +102,30 @@ This project leverages **Node.js**, **Express.js**, and **Playwright's APIReques
 bhu-bharati-ec-service/
 │
 ├── controllers/
-│   └── ecController.js
+│   └── ecController.js             # Handles requests and streams the PDF file
 │
 ├── routes/
-│   └── ecRoutes.js
+│   └── ecRoutes.js                 # API route mapping (/api/ec/download)
+│
+├── scripts/                        # Utility & diagnostic scripts (formerly at root)
+│   ├── saveSession.js              # Interactively saves the authenticated session
+│   ├── check_session.js             # Verifies session validity
+│   ├── launch_with_session.js       # Launches Chromium with saved state for debug
+│   └── (dump files & test tools)
 │
 ├── services/
-│   ├── apiScraperService.js
-│   └── playwrightService.js
+│   ├── apiScraperService.js        # Direct HTTP/API-level scraper logic (no browser UI page)
+│   └── playwrightService.js        # Browser UI-level automation logic (Chromium page simulation)
 │
 ├── sessions/
-│   └── state.json
+│   └── state.json                  # Saved authentication cookies and CSRF tokens
 │
-├── downloads/
+├── Download/                       # Local temporary store for generated PDFs
 │
-├── server.js
-├── package.json
-├── openapi.json
-└── README.md
+├── server.js                       # Express application bootstrap and mock endpoints
+├── package.json                    # Project dependencies and script runner commands
+├── swagger.json                    # Swagger OpenAPI definitions
+└── README.md                       # Project documentation
 ```
 
 ---
@@ -194,10 +200,13 @@ Create a `.env` file in the project root.
 
 ```env
 PORT=3000
-
 HEADLESS=true
-
 TARGET_URL=https://bhubharati.telangana.gov.in
+
+# EC Retrieval Automation Mode. Options:
+# api     - (Default) Direct REST API/JSON-level requests (faster, runs headlessly)
+# browser - Full browser simulation (fills forms, triggers events, enables UI search)
+AUTOMATION_MODE=api
 ```
 
 ---
@@ -267,36 +276,39 @@ The downloaded Encumbrance Certificate.
 
 # How It Works
 
-Instead of automating browser clicks, this project communicates directly with the internal APIs used by the Bhu Bharati portal.
+Instead of automating browser clicks or driving a browser UI, this project communicates **directly** with the backend HTTP/REST endpoints of the Bhu Bharati portal.
 
-The service:
+The workflow is:
+1. **Load Session:** Retrieves saved cookie/CSRF authentication state.
+2. **Resolve IDs:** Calls backend select-dropdown API endpoints to resolve structural names to portal IDs:
+   - District ID
+   - Mandal ID
+   - Village ID
+   - Survey ID
+   - Khata ID
+3. **Execute Search:** Posts the resolved parameters to cache the request in the portal session.
+4. **Generate & Download:** Triggers the document generation and streams the resulting PDF directly to the client.
 
-- Loads a previously authenticated session.
-- Reads cookies and CSRF tokens.
-- Resolves District IDs.
-- Resolves Mandal IDs.
-- Resolves Village IDs.
-- Resolves Survey IDs.
-- Resolves Khata IDs.
-- Generates the EC document.
-- Downloads the generated PDF.
-- Streams the file to the client.
-- Removes temporary files automatically.
+This API-level execution is highly robust, lightweight, and completes in a fraction of the time compared to browser-based UI automation.
 
-This approach significantly improves speed and reliability compared to browser-based automation.
+### The Role of Playwright in API Automation
+Although this project does **not** perform page-level browser automation (no pages or UI elements are loaded/clicked during standard service requests), it leverages **Playwright's `APIRequestContext`** internally for the following reasons:
+- **Trusted Network Context:** To make requests via Chromium's actual network engine. This automatically provides realistic TLS finger-printing, headers, and connection structures, which bypasses modern anti-bot protections (such as Cloudflare) that flag standard HTTP clients like Axios or Fetch.
+- **Automatic State Management:** Cookies and rotated session states are managed natively by Playwright and easily updated in `sessions/state.json`.
 
 ---
 
 # Session Management
 
-Authentication is maintained using Playwright's saved storage state.
+Authentication is maintained using Playwright's saved storage state in `sessions/state.json`.
 
-```
-sessions/
-    state.json
-```
+To manage and debug sessions, the project provides the following convenient npm commands:
 
-The application reuses this session to avoid repeated logins.
+| Command | Script File | Description |
+|---------|-------------|-------------|
+| `npm run session:save` | `scripts/saveSession.js` | Launches a visible Chromium window to log in manually. Once logged in, press ENTER in the terminal to save state.json. |
+| `npm run session:check` | `scripts/check_session.js` | Automated script to verify if the saved session is still valid. |
+| `npm run session:launch` | `scripts/launch_with_session.js` | Launches Chromium with the saved state loaded, allowing you to manually inspect portal state/debug. |
 
 ---
 

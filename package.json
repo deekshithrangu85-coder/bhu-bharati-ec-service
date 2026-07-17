@@ -7,6 +7,10 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "postinstall": "npx playwright install chromium",
+    "session:save": "node scripts/saveSession.js",
+    "session:check": "node scripts/check_session.js",
+    "session:launch": "node scripts/launch_with_session.js",
+    "demo": "node scripts/demo_browser.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

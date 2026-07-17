@@ -10,7 +10,6 @@ async function downloadEC(params) {
     const port = process.env.PORT || 3000;
     const targetUrl = process.env.TARGET_URL || `http://localhost:${port}/mock-search`;
     const statePath = path.join(__dirname, "../sessions/state.json");
-    const userDataDir = path.join(__dirname, "../sessions/browser_profile");
     
     // Detect if we should use local Mock simulation or Production portal automation
     const isMockMode = targetUrl.includes("localhost") || targetUrl.includes("127.0.0.1") || targetUrl.includes("mock-search");
@@ -116,7 +115,7 @@ async function downloadEC(params) {
             // Check for redirection to login/session expiry
             const currentUrl = page.url();
             if (currentUrl.includes("/login") || currentUrl.includes("/Citizen") || currentUrl.toLowerCase().endsWith("/citizen")) {
-                throw new Error("Session expired or rejected by Bhu Bharati (redirected to login page). Please run saveSession.js again to log in.");
+                throw new Error("Session expired or rejected by Bhu Bharati (redirected to login page). Please run 'npm run session:save' to log in.");
             }
             
             console.log("👉 Clicking the Search EC Details card...");
@@ -128,7 +127,7 @@ async function downloadEC(params) {
             
             // Check if the card click redirected to login
             if (page.url().includes("/login")) {
-                throw new Error("Session expired or rejected by Bhu Bharati when loading search page (redirected to login). Please run saveSession.js again.");
+                throw new Error("Session expired or rejected by Bhu Bharati when loading search page (redirected to login). Please run 'npm run session:save'.");
             }
             
             // 3. Wait for the property search page selectors to load
@@ -182,6 +181,19 @@ async function downloadEC(params) {
             await page.waitForLoadState("networkidle");
             await page.waitForTimeout(2000); // 2-second safety buffer for rendering
             
+            // Check for specific portal warning messages rendered on the page
+            const pageText = await page.innerText("body");
+            const tribalMatch = pageText.match(/Trans[a-z]+ Status Survey Number\s*:\s*([^\n\r]+)/i);
+            if (tribalMatch) {
+                throw new Error(tribalMatch[1].trim());
+            }
+            if (pageText.includes("Tribal Villages")) {
+                throw new Error("Survey no / Sub-division no are part of Tribal Villages");
+            }
+            if (pageText.includes("no transaction done") || pageText.includes("no transaction")) {
+                throw new Error("There is no transaction done on the said survey no / sub-division no.");
+            }
+            
             // 6. Trigger Document Download Event
             console.log("⏳ Triggering download event via downloadECPDF()...");
             
@@ -232,6 +244,11 @@ async function downloadEC(params) {
         }
 
     } catch (err) {
+        // If it is a known portal warning error, don't screenshot or prefix it, throw immediately
+        if (err.message.includes("Tribal Villages") || err.message.includes("no transaction")) {
+            throw err;
+        }
+        
         console.error("❌ Playwright service error:", err.message);
         try {
             const downloadsDir = path.join(__dirname, "../Download");
@@ -294,4 +311,3 @@ async function waitForDropdownPopulation(page, selector) {
 }
 
 module.exports = { downloadEC };
-

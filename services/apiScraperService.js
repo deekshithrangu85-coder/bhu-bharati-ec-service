@@ -110,7 +110,7 @@ async function downloadEC(params) {
             
             // Check if Bhu Bharati redirected to the login page (due to expired cookies)
             if (res.url().includes("/login")) {
-                throw new Error("Session expired or rejected by Bhu Bharati (redirected to /login). Please run saveSession.js again to log in.");
+                throw new Error("Session expired or rejected by Bhu Bharati (redirected to /login). Please run 'npm run session:save' to log in.");
             }
 
             const html = await res.text();
@@ -158,7 +158,7 @@ async function downloadEC(params) {
         const surveyHtml = await surveyRes.text();
         console.log(`💬 Diagnostic: surveyRes status=${surveyRes.status()}, url=${surveyRes.url()}, bodyLength=${surveyHtml.length}`);
         if (surveyRes.url().includes("/login")) {
-            throw new Error("Session expired or rejected by Bhu Bharati (redirected to /login) during Survey retrieval. Please run saveSession.js again.");
+            throw new Error("Session expired or rejected by Bhu Bharati (redirected to /login) during Survey retrieval. Please run 'npm run session:save'.");
         }
         const surveyOptions = parseOptions(surveyHtml);
         const surveyId = findOptionValue(surveyOptions, params.surveyNo);
@@ -184,9 +184,19 @@ async function downloadEC(params) {
         const searchDetailsUrl = `${baseUrl}/getEcDetails?VillageId=${villageId}&SurveyId=${surveyId}&khata=${khataId}&mndlname=${encodeURIComponent(params.mandal)}&distname=${encodeURIComponent(params.district)}&villname=${encodeURIComponent(params.village)}&csrf=${csrfToken}`;
         const searchDetailsRes = await request.get(searchDetailsUrl, { headers });
         const searchDetailsHtml = await searchDetailsRes.text();
-        if (searchDetailsHtml.trim() === "1") {
+        
+        // Check for specific portal warning messages in response HTML
+        const tribalMatch = searchDetailsHtml.match(/Trans[a-z]+ Status Survey Number\s*:\s*([^<>\n\r\t]+)/i);
+        if (tribalMatch) {
+            throw new Error(tribalMatch[1].trim());
+        }
+        if (searchDetailsHtml.includes("Tribal Villages")) {
+            throw new Error("Survey no / Sub-division no are part of Tribal Villages");
+        }
+        if (searchDetailsHtml.trim() === "1" || searchDetailsHtml.includes("no transaction done")) {
             throw new Error("There is no transaction done on the said survey no / sub-division no.");
         }
+        
         console.log("✅ Search executed and cached successfully.");
         await syncCsrfToken();
         console.log("⏳ Triggering backend EC document generation...");

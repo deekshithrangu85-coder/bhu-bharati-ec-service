@@ -4,7 +4,7 @@ const fs = require("fs");
 
 (async () => {
     console.log("🚀 Launching browser...");
-    const statePath = path.join(__dirname, "sessions/state.json");
+    const statePath = path.join(__dirname, "../sessions/state.json");
     
     // Read state file to extract setAuth value
     const state = JSON.parse(fs.readFileSync(statePath, "utf-8"));

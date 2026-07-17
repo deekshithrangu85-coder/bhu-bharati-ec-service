@@ -23,7 +23,7 @@ const fs = require("fs");
         await page.waitForTimeout(3000);
 
         // Save session state
-        await context.storageState({ path: path.join(__dirname, "sessions/state.json") });
+        await context.storageState({ path: path.join(__dirname, "../sessions/state.json") });
         console.log("✅ Session saved to sessions/state.json");
 
         // Save the HTML content of the dashboard

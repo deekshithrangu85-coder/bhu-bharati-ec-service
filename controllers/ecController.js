@@ -1,3 +1,4 @@
+const apiScraperService = require("../services/apiScraperService");
 const playwrightService = require("../services/playwrightService");
 const fs = require("fs");
 
@@ -21,8 +22,13 @@ async function downloadEC(req, res) {
     let filePath = null;
 
     try {
-        // 2. Automate document retrieval via Playwright UI automation
-        filePath = await playwrightService.downloadEC({
+        // 2. Automate document retrieval via API-level HTTP scraping or Browser UI automation
+        const mode = process.env.AUTOMATION_MODE || "api";
+        const selectedService = mode.toLowerCase() === "browser" ? playwrightService : apiScraperService;
+        
+        console.log(`🔌 Route handling request in [${mode.toUpperCase()}] mode.`);
+        
+        filePath = await selectedService.downloadEC({
             district,
             mandal,
             village,
@@ -41,16 +47,20 @@ async function downloadEC(req, res) {
                         message: "Error streaming the downloaded document."
                     });
                 }
-                // Cleanup on error (since file might be corrupted or incomplete)
-                cleanupFile(filePath);
             }
+            // 4. Cleanup temporary file
+            cleanupFile(filePath);
         });
 
     } catch (err) {
-        console.error("❌ Controller error:", err.stack);
+        console.error("❌ Controller error:", err.message);
         cleanupFile(filePath);
         
-        res.status(500).json({
+        // If it is a known business validation message, return 200 OK status
+        const isWarning = err.message.includes("Tribal Villages") || err.message.includes("no transaction");
+        const statusCode = isWarning ? 200 : 500;
+        
+        res.status(statusCode).json({
             success: false,
             message: err.message
         });
@@ -74,4 +84,4 @@ function cleanupFile(filePath) {
 
 module.exports = {
     downloadEC
-};
+};

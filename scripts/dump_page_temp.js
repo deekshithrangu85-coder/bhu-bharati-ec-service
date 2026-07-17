@@ -6,7 +6,7 @@ const fs = require("fs");
     console.log("Launching browser...");
     const browser = await chromium.launch({ headless: true });
     const context = await browser.newContext({
-        storageState: path.join(__dirname, "sessions/state.json")
+        storageState: path.join(__dirname, "../sessions/state.json")
     });
 
     const page = await context.newPage();

@@ -24,7 +24,7 @@ const fs = require("fs");
             console.log(`📍 Page Title: ${title}`);
 
             // Save session state
-            await context.storageState({ path: path.join(__dirname, "sessions/state.json") });
+            await context.storageState({ path: path.join(__dirname, "../sessions/state.json") });
             console.log("✅ Session saved to sessions/state.json");
 
             // Save HTML content
