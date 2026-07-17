@@ -316,19 +316,13 @@ To manage and debug sessions, the project provides the following convenient npm 
 
 # Error Handling
 
-The application handles:
+The application automatically parses and handles portal errors and edge-cases:
 
-- Missing request parameters
-- Invalid District names
-- Invalid Mandal names
-- Invalid Village names
-- Invalid Survey numbers
-- Invalid Khata numbers
-- Session expiration
-- CSRF token changes
-- Network failures
-- PDF download failures
-- Temporary file cleanup
+- **Missing/Invalid parameters:** Validates input structure before launching browser engines.
+- **Session expiration & rotation:** Automatically handles cookie updates and warns if a manual refresh via `npm run session:save` is needed.
+- **No Transaction warnings (Blocking):** Detects if the portal returns `"There is no transaction done..."`, returning a clean `200 OK` warning response instead of throwing a system timeout.
+- **Tribal Village status headers (Non-blocking):** Handles cases where the portal displays a `"Survey no / Sub-division no are part of Tribal Villages"` header but still renders transaction grids. It bypasses this status notice and successfully completes the PDF download.
+- **Automatic Cleanup:** Safely cleans up temporary PDF binary cache files on the server instantly after streaming them to the client.
 
 ---
 
